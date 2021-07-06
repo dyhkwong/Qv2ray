@@ -181,25 +181,31 @@ namespace Qv2ray::components::latency::realping
             else
                 proxy_ip = "127.0.0.1";
         }
-        QString protocolWithUsrPwd;
+        QUrl url;
         int port;
         if (GlobalConfig.inboundConfig.useHTTP)
         {
-            protocolWithUsrPwd = "http://";
+            url.setScheme("http");
             if (GlobalConfig.inboundConfig.httpSettings.useAuth)
-                protocolWithUsrPwd +=
-                    GlobalConfig.inboundConfig.httpSettings.account.user + ":" + GlobalConfig.inboundConfig.httpSettings.account.pass + "@";
+            {
+                url.setUserName(GlobalConfig.inboundConfig.httpSettings.account.user, QUrl::DecodedMode);
+                url.setPassword(GlobalConfig.inboundConfig.httpSettings.account.pass, QUrl::DecodedMode);
+            }
             port = GlobalConfig.inboundConfig.httpSettings.port;
         }
         else
         {
-            protocolWithUsrPwd = "socks5://";
+            url.setScheme("socks5h"); // resolve hostname remotely to avoid DNS poisoning
             if (GlobalConfig.inboundConfig.socksSettings.useAuth)
-                protocolWithUsrPwd +=
-                    GlobalConfig.inboundConfig.socksSettings.account.user + ":" + GlobalConfig.inboundConfig.socksSettings.account.pass + "@";
+            {
+                url.setUserName(GlobalConfig.inboundConfig.socksSettings.account.user, QUrl::DecodedMode);
+                url.setPassword(GlobalConfig.inboundConfig.socksSettings.account.pass, QUrl::DecodedMode);
+            }
             port = GlobalConfig.inboundConfig.socksSettings.port;
         }
-        return (protocolWithUsrPwd + proxy_ip + ":" + QSTRN(port)).toStdString();
+        url.setHost(proxy_ip);
+        url.setPort(port);
+        return url.toString(QUrl::FullyEncoded).toStdString();
     }
     void RealPing::start()
     {
