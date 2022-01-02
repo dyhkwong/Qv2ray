@@ -69,11 +69,12 @@ jobs:
         version: 6.2.2
         py7zrversion: ' '
         aqtversion: ' '
+        setup-python: false
 
     - name: run-vcpkg
       uses: lukka/run-vcpkg@v7.3
       with:
-        vcpkgArguments: protobuf openssl grpc libuv uvw
+        vcpkgArguments: protobuf openssl grpc
         vcpkgGitCommitId: c69096659f49e2b1aca532ea5c2f8c135182519b
         vcpkgTriplet: ${{ matrix.config.vcpkgTriplet }}
   
