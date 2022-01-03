@@ -37,6 +37,8 @@ class MainWindow
     void MWToggleVisibility();
     void MWShowWindow();
     void MWHideWindow();
+    void MWSetSystemProxy();
+    void MWClearSystemProxy();
 
   private slots:
     void on_preferencesBtn_clicked();

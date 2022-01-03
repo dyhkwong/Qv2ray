@@ -49,9 +49,10 @@ namespace Qv2ray::Models
         Bindable<ProfileId> LastConnectedId;
         Bindable<QString> GeoIPPath;
         Bindable<QString> GeoSitePath;
+        Bindable<bool> AutoConfigureSystemProxy{ false };
         QJS_COMPARE(Qv2rayBehaviorConfig, DefaultLatencyTestEngine, DefaultKernelId, AutoConnectBehavior, QuietMode, AutoConnectProfileId, LastConnectedId, GeoIPPath,
-                    GeoSitePath)
-        QJS_JSON(P(DefaultLatencyTestEngine, DefaultKernelId, AutoConnectBehavior, QuietMode, AutoConnectProfileId, LastConnectedId, GeoIPPath, GeoSitePath))
+                    GeoSitePath, AutoConfigureSystemProxy)
+        QJS_JSON(P(DefaultLatencyTestEngine, DefaultKernelId, AutoConnectBehavior, QuietMode, AutoConnectProfileId, LastConnectedId, GeoIPPath, GeoSitePath, AutoConfigureSystemProxy))
     };
 
     struct ProtocolInboundBase

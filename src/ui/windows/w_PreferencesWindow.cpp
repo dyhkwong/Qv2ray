@@ -46,6 +46,7 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
     AppConfig.appearanceConfig->DarkModeTrayIcon.ReadWriteBind(darkTrayCB, "checked", &QCheckBox::stateChanged);
     AppConfig.appearanceConfig->ShowTrayIcon.ReadWriteBind(showTrayCB, "checked", &QCheckBox::stateChanged);
     AppConfig.behaviorConfig->QuietMode.ReadWriteBind(quietModeCB, "checked", &QCheckBox::stateChanged);
+    AppConfig.behaviorConfig->AutoConfigureSystemProxy.ReadWriteBind(autoConfSysProxyCB, "checked", &QCheckBox::stateChanged);
 
     AppConfig.inboundConfig->ListenAddress1.ReadWriteBind(listenIP1Txt, "text", &QLineEdit::textEdited);
     AppConfig.inboundConfig->ListenAddress2.ReadWriteBind(listenIP2Txt, "text", &QLineEdit::textEdited);

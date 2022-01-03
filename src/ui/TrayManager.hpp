@@ -34,6 +34,8 @@ namespace Qv2ray::ui
       signals:
         void TrayActivated(QSystemTrayIcon::ActivationReason);
         void VisibilityToggled();
+        void SetSystemProxy();
+        void ClearSystemProxy();
 
       private:
         void ReloadRecentConnectionList();
@@ -54,5 +56,9 @@ namespace Qv2ray::ui
 
         QMenu *tray_RecentConnectionsMenu;
         QAction *tray_ClearRecentConnectionsAction;
+
+        QMenu *tray_SystemProxyMenu;
+        QAction *tray_action_SetSystemProxy;
+        QAction *tray_action_ClearSystemProxy;
     };
 } // namespace Qv2ray::ui

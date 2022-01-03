@@ -275,6 +275,23 @@
               </item>
              </layout>
             </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_89">
+              <property name="text">
+               <string>Auto Configure System Proxy</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::PlainText</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QCheckBox" name="autoConfSysProxyCB">
+              <property name="text">
+               <string>Enabled</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>

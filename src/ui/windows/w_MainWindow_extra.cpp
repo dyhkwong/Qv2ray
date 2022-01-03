@@ -3,6 +3,7 @@
 #include "Qv2rayBase/Profile/KernelManager.hpp"
 #include "Qv2rayBase/Profile/ProfileManager.hpp"
 #include "components/GuiPluginHost/GuiPluginHost.hpp"
+#include "components/ProxyConfigurator/ProxyConfigurator.hpp"
 #include "ui/WidgetUIBase.hpp"
 #include "ui/windows/editors/w_JsonEditor.hpp"
 #include "w_MainWindow.hpp"
@@ -382,4 +383,55 @@ void MainWindow::Action_DeleteConnections()
 
     for (const auto &group : groupsList)
         QvProfileManager->DeleteGroup(group, false);
+}
+
+void MainWindow::MWSetSystemProxy()
+{
+    const auto inboundInfo = QvBaselib->KernelManager()->GetCurrentConnectionInboundInfo();
+    bool httpEnabled = false;
+    bool socksEnabled = false;
+    int httpPort = 0;
+    int socksPort = 0;
+    QString httpAddress;
+    QString socksAddress;
+
+    for (const auto &[protocol, listenAddr, listenPort] : inboundInfo)
+    {
+        if (protocol == "http" && !httpEnabled)
+        {
+            httpEnabled = true;
+            httpAddress = listenAddr;
+            httpPort = listenPort.from;
+        }
+        else if (protocol == "socks" && !socksEnabled)
+        {
+            socksEnabled = true;
+            socksAddress = listenAddr;
+            socksPort = listenPort.from;
+        }
+    }
+
+    const QHostAddress ha(httpAddress), sa(socksAddress);
+    if (ha.isEqual(QHostAddress::AnyIPv4)) // "0.0.0.0"
+        httpAddress = "127.0.0.1";
+    else if (ha.isEqual(QHostAddress::AnyIPv6)) // "::"
+        httpAddress = "::1";
+    if (sa.isEqual(QHostAddress::AnyIPv4)) // "0.0.0.0"
+        socksAddress = "127.0.0.1";
+    else if (sa.isEqual(QHostAddress::AnyIPv6)) // "::"
+        socksAddress = "::1";
+
+    if (!httpAddress.isEmpty() || !socksAddress.isEmpty())
+    {
+        SetSystemProxy(httpAddress, socksAddress, httpPort, socksPort);
+    }
+    else
+    {
+        QvBaselib->Warn(tr("Cannot set system proxy"), tr("Both HTTP and SOCKS inbounds are not enabled"));
+    }
+}
+
+void MainWindow::MWClearSystemProxy()
+{
+    ClearSystemProxy();
 }

@@ -454,6 +454,11 @@ void MainWindow::OnDisconnected(const ProfileId &id)
     netspeedLabel->setText("0.00 B/s" NEWLINE "0.00 B/s");
     dataamountLabel->setText("0.00 B" NEWLINE "0.00 B");
     connetionStatusLabel->setText(tr("Not Connected"));
+
+    if (GlobalConfig->behaviorConfig->AutoConfigureSystemProxy)
+    {
+        MWClearSystemProxy();
+    }
 }
 
 void MainWindow::OnConnected(const ProfileId &id)
@@ -473,6 +478,11 @@ void MainWindow::OnConnected(const ProfileId &id)
     GlobalConfig->appearanceConfig->RecentConnections->push_front(id);
 
     on_locateBtn_clicked();
+
+    if (GlobalConfig->behaviorConfig->AutoConfigureSystemProxy)
+    {
+        MWSetSystemProxy();
+    }
 }
 
 void MainWindow::on_connectionFilterTxt_textEdited(const QString &arg1)

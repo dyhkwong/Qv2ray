@@ -44,6 +44,13 @@ TrayManager::TrayManager(QObject *parent) : QObject(parent)
             tray_RootMenu->addMenu(tray_RecentConnectionsMenu);
         }
 
+        tray_SystemProxyMenu = new QMenu;
+        tray_RootMenu->addMenu(tray_SystemProxyMenu);
+        tray_action_SetSystemProxy = new QAction(tray_SystemProxyMenu);
+        tray_action_ClearSystemProxy = new QAction(tray_SystemProxyMenu);
+        tray_SystemProxyMenu->addAction(tray_action_SetSystemProxy);
+        tray_SystemProxyMenu->addAction(tray_action_ClearSystemProxy);
+
         tray_RootMenu->addSeparator();
         tray_RootMenu->addAction(tray_action_Start);
         tray_RootMenu->addAction(tray_action_Stop);
@@ -83,6 +90,8 @@ TrayManager::TrayManager(QObject *parent) : QObject(parent)
     connect(tray_action_Stop, &QAction::triggered, QvProfileManager, &Qv2rayBase::Profile::ProfileManager::StopConnection);
     connect(tray_action_Restart, &QAction::triggered, QvProfileManager, &Qv2rayBase::Profile::ProfileManager::RestartConnection);
     connect(tray_action_Quit, &QAction::triggered, this, &Qv2rayApplication::exit, Qt::QueuedConnection);
+    connect(tray_action_SetSystemProxy, &QAction::triggered, this, &TrayManager::SetSystemProxy);
+    connect(tray_action_ClearSystemProxy, &QAction::triggered, this, &TrayManager::ClearSystemProxy);
 }
 
 TrayManager::~TrayManager()
@@ -153,6 +162,10 @@ void TrayManager::Retranslate()
     tray_action_Start->setText(tr("Connect"));
     tray_action_Restart->setText(tr("Reconnect"));
     tray_action_Stop->setText(tr("Disconnect"));
+
+    tray_SystemProxyMenu->setTitle(tr("System Proxy"));
+    tray_action_SetSystemProxy->setText(tr("Set System Proxy"));
+    tray_action_ClearSystemProxy->setText(tr("Clear System Proxy"));
 }
 
 void TrayManager::ShowTrayIcon()

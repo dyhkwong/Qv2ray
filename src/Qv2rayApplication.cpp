@@ -137,6 +137,8 @@ Qv2rayExitReason Qv2rayApplication::RunQv2ray()
 
     connect(trayManager, &TrayManager::TrayActivated, mainWindow, &MainWindow::OnTrayIconActivated);
     connect(trayManager, &TrayManager::VisibilityToggled, mainWindow, &MainWindow::MWToggleVisibility);
+    connect(trayManager, &TrayManager::SetSystemProxy, mainWindow, &MainWindow::MWSetSystemProxy);
+    connect(trayManager, &TrayManager::ClearSystemProxy, mainWindow, &MainWindow::MWClearSystemProxy);
 
     if (StartupArguments.arguments.contains(Qv2rayStartupArguments::QV2RAY_LINK))
     {
