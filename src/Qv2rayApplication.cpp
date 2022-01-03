@@ -137,6 +137,8 @@ Qv2rayExitReason Qv2rayApplication::RunQv2ray()
 
     connect(trayManager, &TrayManager::TrayActivated, mainWindow, &MainWindow::OnTrayIconActivated);
     connect(trayManager, &TrayManager::VisibilityToggled, mainWindow, &MainWindow::MWToggleVisibility);
+    connect(trayManager, &TrayManager::SetSystemProxy, mainWindow, &MainWindow::MWSetSystemProxy);
+    connect(trayManager, &TrayManager::ClearSystemProxy, mainWindow, &MainWindow::MWClearSystemProxy);
 
     if (StartupArguments.arguments.contains(Qv2rayStartupArguments::QV2RAY_LINK))
     {
@@ -167,7 +169,19 @@ void Qv2rayApplication::quitInternal()
     delete StyleManager;
     delete GUIPluginHost;
     SaveQv2raySettings();
+    if (GlobalConfig->behaviorConfig->AutoConfigureSystemProxy)
+    {
+        mainWindow->MWClearSystemProxy();
+    }
     QvBaselib->Shutdown();
+}
+
+void Qv2rayApplication::clearSystemProxyOnQuit()
+{
+    if (GlobalConfig->behaviorConfig->AutoConfigureSystemProxy)
+    {
+        mainWindow->MWClearSystemProxy();
+    }
 }
 
 bool Qv2rayApplication::parseCommandLine(QString *errorMessage, bool *canContinue)
@@ -349,6 +363,7 @@ void Qv2rayApplication::onMessageReceived(quint32 clientId, const QByteArray &_m
         {
             StartupArguments._qvNewVersionPath = newPath;
             exitReason = EXIT_NEW_VERSION_TRIGGER;
+            clearSystemProxyOnQuit();
             QCoreApplication::quit();
         }
     }
@@ -360,6 +375,7 @@ void Qv2rayApplication::onMessageReceived(quint32 clientId, const QByteArray &_m
             case Qv2rayStartupArguments::EXIT:
             {
                 exitReason = EXIT_NORMAL;
+                clearSystemProxyOnQuit();
                 quit();
                 break;
             }

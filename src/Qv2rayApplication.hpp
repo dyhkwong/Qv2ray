@@ -93,6 +93,7 @@ class Qv2rayApplication
     virtual void p_OpenURL(const QUrl &url) override;
 
     virtual bool eventFilter(QObject *watched, QEvent *event) override;
+    void clearSystemProxyOnQuit();
 
   private:
     void quitInternal();
