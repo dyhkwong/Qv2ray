@@ -62,13 +62,16 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
         AppConfig.inboundConfig->HasHTTP.ReadWriteBind(httpGroupBox, "checked", &QGroupBox::toggled);
         AppConfig.inboundConfig->HTTPConfig->ListenPort.ReadWriteBind(httpPortLE, "value", &QSpinBox::valueChanged);
         AppConfig.inboundConfig->HTTPConfig->Sniffing.ReadWriteBind(httpSniffingCB, "currentIndex", &QComboBox::currentIndexChanged);
+        AppConfig.inboundConfig->HTTPConfig->RouteOnly.ReadWriteBind(httpRouteOnlyCB, "checked", &QCheckBox::stateChanged);
         AppConfig.inboundConfig->HTTPConfig->Sniffing.Observe(
             [this](auto newVal)
             {
                 const bool hasHttp = AppConfig.inboundConfig->HasHTTP;
                 httpOverrideHTTPCB->setEnabled(hasHttp && newVal == ProtocolInboundBase::SNIFFING_FULL);
                 httpOverrideTLSCB->setEnabled(hasHttp && newVal == ProtocolInboundBase::SNIFFING_FULL);
+                httpOverrideQUICCB->setEnabled(hasHttp && newVal == ProtocolInboundBase::SNIFFING_FULL);
                 httpOverrideFakeDNSCB->setEnabled(hasHttp && newVal != ProtocolInboundBase::SNIFFING_OFF);
+                httpRouteOnlyCB->setEnabled(hasHttp && newVal == ProtocolInboundBase::SNIFFING_FULL);
             });
 
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride.Observe(
@@ -76,6 +79,7 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
             {
                 httpOverrideHTTPCB->setChecked(newVal.contains("http"));
                 httpOverrideTLSCB->setChecked(newVal.contains("tls"));
+                httpOverrideQUICCB->setChecked(newVal.contains("quic"));
                 httpOverrideFakeDNSCB->setChecked(newVal.contains("fakedns"));
             });
     }
@@ -91,13 +95,16 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
         AppConfig.inboundConfig->SOCKSConfig->UDPLocalAddress.ReadWriteBind(socksUDPIP, "text", &QLineEdit::textEdited);
 
         AppConfig.inboundConfig->SOCKSConfig->Sniffing.ReadWriteBind(socksSniffingCB, "currentIndex", &QComboBox::currentIndexChanged);
+        AppConfig.inboundConfig->SOCKSConfig->RouteOnly.ReadWriteBind(socksRouteOnlyCB, "checked", &QCheckBox::stateChanged);
         AppConfig.inboundConfig->SOCKSConfig->Sniffing.Observe(
             [this](auto newVal)
             {
                 const bool hasSocks = AppConfig.inboundConfig->HasSOCKS;
                 socksOverrideHTTPCB->setEnabled(hasSocks && newVal == ProtocolInboundBase::SNIFFING_FULL);
                 socksOverrideTLSCB->setEnabled(hasSocks && newVal == ProtocolInboundBase::SNIFFING_FULL);
+                socksOverrideQUICCB->setEnabled(hasSocks && newVal == ProtocolInboundBase::SNIFFING_FULL);
                 socksOverrideFakeDNSCB->setEnabled(hasSocks && newVal != ProtocolInboundBase::SNIFFING_OFF);
+                socksRouteOnlyCB->setEnabled(hasSocks && newVal == ProtocolInboundBase::SNIFFING_FULL);
             });
 
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.Observe(
@@ -105,6 +112,7 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
             {
                 socksOverrideHTTPCB->setChecked(newVal.contains("http"));
                 socksOverrideTLSCB->setChecked(newVal.contains("tls"));
+                socksOverrideQUICCB->setChecked(newVal.contains("quic"));
                 socksOverrideFakeDNSCB->setChecked(newVal.contains("fakedns"));
             });
     }
@@ -116,21 +124,25 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
         AppConfig.inboundConfig->DokodemoDoorConfig->ListenPort.ReadWriteBind(tProxyPort, "value", &QSpinBox::valueChanged);
 
         AppConfig.inboundConfig->DokodemoDoorConfig->Sniffing.ReadWriteBind(dokoSniffingCB, "currentIndex", &QComboBox::currentIndexChanged);
+        AppConfig.inboundConfig->DokodemoDoorConfig->RouteOnly.ReadWriteBind(tproxyRouteOnlyCB, "checked", &QCheckBox::stateChanged);
         AppConfig.inboundConfig->DokodemoDoorConfig->Sniffing.Observe(
             [this](auto newVal)
             {
-                const bool hasSocks = AppConfig.inboundConfig->HasDokodemoDoor;
-                tproxyOverrideHTTPCB->setEnabled(hasSocks && newVal == ProtocolInboundBase::SNIFFING_FULL);
-                tproxyOverrideTLSCB->setEnabled(hasSocks && newVal == ProtocolInboundBase::SNIFFING_FULL);
-                tproxyOverrideFakeDNSCB->setEnabled(hasSocks && newVal != ProtocolInboundBase::SNIFFING_OFF);
+                const bool hasDokodemoDoor = AppConfig.inboundConfig->HasDokodemoDoor;
+                tproxyOverrideHTTPCB->setEnabled(hasDokodemoDoor && newVal == ProtocolInboundBase::SNIFFING_FULL);
+                tproxyOverrideTLSCB->setEnabled(hasDokodemoDoor && newVal == ProtocolInboundBase::SNIFFING_FULL);
+                tproxyOverrideQUICCB->setEnabled(hasDokodemoDoor && newVal == ProtocolInboundBase::SNIFFING_FULL);
+                tproxyOverrideFakeDNSCB->setEnabled(hasDokodemoDoor && newVal != ProtocolInboundBase::SNIFFING_OFF);
+                tproxyRouteOnlyCB->setEnabled(hasDokodemoDoor && newVal == ProtocolInboundBase::SNIFFING_FULL);
             });
 
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.Observe(
-            [this](auto val)
+            [this](auto newVal)
             {
-                tproxyOverrideHTTPCB->setChecked(val.contains("http"));
-                tproxyOverrideTLSCB->setChecked(val.contains("tls"));
-                tproxyOverrideFakeDNSCB->setChecked(val.contains("fakedns"));
+                tproxyOverrideHTTPCB->setChecked(newVal.contains("http"));
+                tproxyOverrideTLSCB->setChecked(newVal.contains("tls"));
+                tproxyOverrideQUICCB->setChecked(newVal.contains("quic"));
+                tproxyOverrideFakeDNSCB->setChecked(newVal.contains("fakedns"));
             });
 
         AppConfig.inboundConfig->DokodemoDoorConfig->WorkingMode.ReadWriteBind(tproxyModeCB, "currentIndex", &QComboBox::currentIndexChanged);
@@ -419,6 +431,16 @@ void PreferencesWindow::on_tproxyOverrideTLSCB_stateChanged(int arg1)
     AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
 }
 
+void PreferencesWindow::on_tproxyOverrideQUICCB_stateChanged(int arg1)
+{
+    NEEDRESTART
+    if (arg1 != Qt::Checked)
+        AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->removeAll("quic");
+    else if (!AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->contains("quic"))
+        AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->append(u"quic"_qs);
+    AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
+}
+
 void PreferencesWindow::on_tproxyOverrideFakeDNSCB_stateChanged(int arg1)
 {
     NEEDRESTART
@@ -449,6 +471,16 @@ void PreferencesWindow::on_httpOverrideTLSCB_stateChanged(int arg1)
     AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
 }
 
+void PreferencesWindow::on_httpOverrideQUICCB_stateChanged(int arg1)
+{
+    NEEDRESTART
+    if (arg1 != Qt::Checked)
+        AppConfig.inboundConfig->HTTPConfig->DestinationOverride->removeAll("quic");
+    else if (!AppConfig.inboundConfig->HTTPConfig->DestinationOverride->contains("quic"))
+        AppConfig.inboundConfig->HTTPConfig->DestinationOverride->append(u"quic"_qs);
+    AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
+}
+
 void PreferencesWindow::on_httpOverrideFakeDNSCB_stateChanged(int arg1)
 {
     NEEDRESTART
@@ -476,6 +508,16 @@ void PreferencesWindow::on_socksOverrideTLSCB_stateChanged(int arg1)
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->removeAll("tls");
     else if (!AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->contains("tls"))
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->append(u"tls"_qs);
+    AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
+}
+
+void PreferencesWindow::on_socksOverrideQUICCB_stateChanged(int arg1)
+{
+    NEEDRESTART
+    if (arg1 != Qt::Checked)
+        AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->removeAll("quic");
+    else if (!AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->contains("quic"))
+        AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->append(u"quic"_qs);
     AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
 }
 

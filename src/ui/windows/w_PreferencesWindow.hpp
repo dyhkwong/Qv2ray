@@ -61,14 +61,17 @@ class PreferencesWindow
     void on_tproxyOverrideFakeDNSCB_stateChanged(int arg1);
     void on_tproxyOverrideHTTPCB_stateChanged(int arg1);
     void on_tproxyOverrideTLSCB_stateChanged(int arg1);
+    void on_tproxyOverrideQUICCB_stateChanged(int arg1);
 
     void on_httpOverrideFakeDNSCB_stateChanged(int arg1);
     void on_httpOverrideHTTPCB_stateChanged(int arg1);
     void on_httpOverrideTLSCB_stateChanged(int arg1);
+    void on_httpOverrideQUICCB_stateChanged(int arg1);
 
     void on_socksOverrideFakeDNSCB_stateChanged(int arg1);
     void on_socksOverrideHTTPCB_stateChanged(int arg1);
     void on_socksOverrideTLSCB_stateChanged(int arg1);
+    void on_socksOverrideQUICCB_stateChanged(int arg1);
 
     void on_qvProxyTypeCombo_currentIndexChanged(int index);
 

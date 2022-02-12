@@ -67,8 +67,9 @@ namespace Qv2ray::Models
         Bindable<int> ListenPort;
         Bindable<SniffingBehavior> Sniffing{ SNIFFING_OFF };
         Bindable<QList<QString>> DestinationOverride{ { "http", "tls" } };
+        Bindable<bool> RouteOnly{ false };
         ProtocolInboundBase(int port = 0) : ListenPort(port){};
-        QJS_JSON(P(ListenPort, Sniffing, DestinationOverride))
+        QJS_JSON(P(ListenPort, Sniffing, DestinationOverride, RouteOnly))
 
         virtual void Propagate(InboundObject &in) const
         {
@@ -77,6 +78,7 @@ namespace Qv2ray::Models
                 { u"enabled"_qs, Sniffing != SNIFFING_OFF },                             //
                 { u"metadataOnly"_qs, Sniffing == SNIFFING_METADATA_ONLY },              //
                 { u"destOverride"_qs, QJsonArray::fromStringList(DestinationOverride) }, //
+                { u"routeOnly"_qs, *RouteOnly },                                         //
             };
         }
     };
@@ -87,7 +89,7 @@ namespace Qv2ray::Models
         Bindable<QString> UDPLocalAddress;
         SocksInboundConfig() : ProtocolInboundBase(1089){};
 
-        QJS_COMPARE(SocksInboundConfig, EnableUDP, UDPLocalAddress, ListenPort, Sniffing, DestinationOverride)
+        QJS_COMPARE(SocksInboundConfig, EnableUDP, UDPLocalAddress, ListenPort, Sniffing, DestinationOverride, RouteOnly)
         QJS_JSON(P(EnableUDP, UDPLocalAddress), B(ProtocolInboundBase))
 
         virtual void Propagate(InboundObject &in) const
@@ -101,7 +103,7 @@ namespace Qv2ray::Models
     struct HTTPInboundConfig : public ProtocolInboundBase
     {
         HTTPInboundConfig() : ProtocolInboundBase(8889){};
-        QJS_COMPARE(HTTPInboundConfig, ListenPort, Sniffing, DestinationOverride)
+        QJS_COMPARE(HTTPInboundConfig, ListenPort, Sniffing, DestinationOverride, RouteOnly)
         QJS_JSON(B(ProtocolInboundBase))
     };
 
@@ -115,7 +117,7 @@ namespace Qv2ray::Models
         Bindable<DokoWorkingMode> WorkingMode{ TPROXY };
         DokodemoDoorInboundConfig() : ProtocolInboundBase(12345){};
 
-        QJS_COMPARE(DokodemoDoorInboundConfig, WorkingMode, ListenPort, Sniffing, DestinationOverride)
+        QJS_COMPARE(DokodemoDoorInboundConfig, WorkingMode, ListenPort, Sniffing, DestinationOverride, RouteOnly)
         QJS_JSON(P(WorkingMode), B(ProtocolInboundBase))
 
         virtual void Propagate(InboundObject &in) const

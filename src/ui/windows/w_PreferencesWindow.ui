@@ -673,6 +673,13 @@
                    </widget>
                   </item>
                   <item>
+                   <widget class="QCheckBox" name="socksOverrideQUICCB">
+                    <property name="text">
+                     <string>QUIC</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <spacer name="horizontalSpacer_6">
                     <property name="orientation">
                      <enum>Qt::Horizontal</enum>
@@ -686,6 +693,23 @@
                    </spacer>
                   </item>
                  </layout>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_94">
+                  <property name="text">
+                   <string>Route Only</string>
+                  </property>
+                  <property name="textFormat">
+                   <enum>Qt::PlainText</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QCheckBox" name="socksRouteOnlyCB">
+                  <property name="text">
+                   <string>Enabled</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -792,6 +816,13 @@
                    </widget>
                   </item>
                   <item>
+                   <widget class="QCheckBox" name="httpOverrideQUICCB">
+                    <property name="text">
+                     <string>QUIC</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <spacer name="horizontalSpacer_8">
                     <property name="orientation">
                      <enum>Qt::Horizontal</enum>
@@ -805,6 +836,23 @@
                    </spacer>
                   </item>
                  </layout>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_95">
+                  <property name="text">
+                   <string>Route Only</string>
+                  </property>
+                  <property name="textFormat">
+                   <enum>Qt::PlainText</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QCheckBox" name="httpRouteOnlyCB">
+                  <property name="text">
+                   <string>Enabled</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -905,6 +953,13 @@
                    </widget>
                   </item>
                   <item>
+                   <widget class="QCheckBox" name="tproxyOverrideQUICCB">
+                    <property name="text">
+                     <string>QUIC</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <spacer name="horizontalSpacer_3">
                     <property name="orientation">
                      <enum>Qt::Horizontal</enum>
@@ -920,6 +975,23 @@
                  </layout>
                 </item>
                 <item row="3" column="0">
+                 <widget class="QLabel" name="label_96">
+                  <property name="text">
+                   <string>Route Only</string>
+                  </property>
+                  <property name="textFormat">
+                   <enum>Qt::PlainText</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QCheckBox" name="tproxyRouteOnlyCB">
+                  <property name="text">
+                   <string>Enabled</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
                  <widget class="QLabel" name="label_78">
                   <property name="text">
                    <string>Working Mode</string>
@@ -929,7 +1001,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="1">
+                <item row="4" column="1">
                  <widget class="QComboBox" name="tproxyModeCB">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
