@@ -61,7 +61,7 @@ set(QV2RAY_QV2RAYBASE_PROVIDER        "module" CACHE STRING "Qv2rayBase Provider
 set(QV2RAY_SINGLEAPPLICATION_PROVIDER "module" CACHE STRING "SingleApplication Provider")
 
 option(QV2RAY_HAS_BUILTIN_THEMES    "Build with builtin themes" ON)
-option(QV2RAY_AUTO_UPDATE           "Has auto update checker"   ON)
+option(QV2RAY_AUTO_UPDATE           "Has auto update checker"   OFF)
 if(NOT QV2RAY_AUTO_UPDATE)
     add_definitions(-DQV2RAY_NO_AUTOUPDATE=1)
 endif()
