@@ -63,6 +63,16 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
         AppConfig.inboundConfig->HTTPConfig->ListenPort.ReadWriteBind(httpPortLE, "value", &QSpinBox::valueChanged);
         AppConfig.inboundConfig->HTTPConfig->Sniffing.ReadWriteBind(httpSniffingCB, "currentIndex", &QComboBox::currentIndexChanged);
         AppConfig.inboundConfig->HTTPConfig->RouteOnly.ReadWriteBind(httpRouteOnlyCB, "checked", &QCheckBox::stateChanged);
+        AppConfig.inboundConfig->HasHTTP.Observe(
+            [this](auto newVal)
+            {
+                const auto sniffing = AppConfig.inboundConfig->SOCKSConfig->Sniffing;
+                httpOverrideHTTPCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                httpOverrideTLSCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                httpOverrideQUICCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                httpOverrideFakeDNSCB->setEnabled(newVal && sniffing != ProtocolInboundBase::SNIFFING_OFF);
+                httpRouteOnlyCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+            });
         AppConfig.inboundConfig->HTTPConfig->Sniffing.Observe(
             [this](auto newVal)
             {
@@ -96,6 +106,16 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
 
         AppConfig.inboundConfig->SOCKSConfig->Sniffing.ReadWriteBind(socksSniffingCB, "currentIndex", &QComboBox::currentIndexChanged);
         AppConfig.inboundConfig->SOCKSConfig->RouteOnly.ReadWriteBind(socksRouteOnlyCB, "checked", &QCheckBox::stateChanged);
+        AppConfig.inboundConfig->HasSOCKS.Observe(
+            [this](auto newVal)
+            {
+                const auto sniffing = AppConfig.inboundConfig->SOCKSConfig->Sniffing;
+                socksOverrideHTTPCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                socksOverrideTLSCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                socksOverrideQUICCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                socksOverrideFakeDNSCB->setEnabled(newVal && sniffing != ProtocolInboundBase::SNIFFING_OFF);
+                socksRouteOnlyCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+            });
         AppConfig.inboundConfig->SOCKSConfig->Sniffing.Observe(
             [this](auto newVal)
             {
@@ -125,6 +145,16 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
 
         AppConfig.inboundConfig->DokodemoDoorConfig->Sniffing.ReadWriteBind(dokoSniffingCB, "currentIndex", &QComboBox::currentIndexChanged);
         AppConfig.inboundConfig->DokodemoDoorConfig->RouteOnly.ReadWriteBind(tproxyRouteOnlyCB, "checked", &QCheckBox::stateChanged);
+        AppConfig.inboundConfig->HasDokodemoDoor.Observe(
+            [this](auto newVal)
+            {
+                const auto sniffing = AppConfig.inboundConfig->DokodemoDoorConfig->Sniffing;
+                tproxyOverrideHTTPCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                tproxyOverrideTLSCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                tproxyOverrideQUICCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+                tproxyOverrideFakeDNSCB->setEnabled(newVal && sniffing != ProtocolInboundBase::SNIFFING_OFF);
+                tproxyRouteOnlyCB->setEnabled(newVal && sniffing == ProtocolInboundBase::SNIFFING_FULL);
+            });
         AppConfig.inboundConfig->DokodemoDoorConfig->Sniffing.Observe(
             [this](auto newVal)
             {
