@@ -79,6 +79,7 @@ void V2RayKernel::Start()
 
     auto env = QProcessEnvironment::systemEnvironment();
     env.insert(u"v2ray.location.asset"_qs, settings.AssetsPath);
+    env.insert(u"v2ray.conf.geoloader"_qs, u"memconservative"_qs);
     vProcess->setProcessEnvironment(env);
     vProcess->setProcessChannelMode(QProcess::MergedChannels);
     vProcess->start(settings.CorePath, { u"-config"_qs, configFilePath }, QIODevice::ReadWrite | QIODevice::Text);
@@ -135,6 +136,7 @@ std::optional<QString> V2RayKernel::ValidateConfig(const QString &path)
         // Append assets location env.
         auto env = QProcessEnvironment::systemEnvironment();
         env.insert(u"v2ray.location.asset"_qs, settings.AssetsPath);
+        env.insert(u"v2ray.conf.geoloader"_qs, u"memconservative"_qs);
 
         QProcess process;
         process.setProcessEnvironment(env);
