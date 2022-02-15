@@ -693,6 +693,7 @@ void MainWindow::on_aboutBtn_clicked()
 
 void MainWindow::Action_Exit()
 {
+    QvApp->clearSystemProxyOnQuit();
     QvApp->quit();
 }
 
