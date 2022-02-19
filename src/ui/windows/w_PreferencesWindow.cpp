@@ -200,7 +200,7 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
         dnsSettingsWidget = new DnsSettingsWidget(this);
 
         QList<V2RayFakeDNSObject> pools;
-        for (const auto & pool : defaultRouteObject.fakedns["pools"].toArray())
+        for (const auto &pool : defaultRouteObject.fakedns["pools"].toArray())
         {
             pools.append(V2RayFakeDNSObject::fromJson(pool.toObject()));
         }
@@ -362,7 +362,7 @@ void PreferencesWindow::on_buttonBox_accepted()
     }
 
     QJsonArray pools;
-    for (auto & pool : fakedns)
+    for (const auto &pool : fakedns)
     {
         pools.append(pool.toJson());
     }

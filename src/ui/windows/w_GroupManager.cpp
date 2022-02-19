@@ -133,7 +133,7 @@ void GroupManager::SaveCurrentGroup()
     routing.dns = dns.toJson();
 
     QJsonArray pools;
-    for (auto & pool : fakedns)
+    for (const auto &pool : fakedns)
     {
         pools.append(pool.toJson());
     }
@@ -383,7 +383,7 @@ void GroupManager::on_groupList_itemClicked(QListWidgetItem *item)
         const auto routingObject = QvProfileManager->GetRouting(routeId);
 
         QList<V2RayFakeDNSObject> pools;
-        for (const auto & pool : routingObject.fakedns["pools"].toArray())
+        for (const auto &pool : routingObject.fakedns["pools"].toArray())
         {
             pools.append(V2RayFakeDNSObject::fromJson(pool.toObject()));
         }

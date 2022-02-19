@@ -96,7 +96,7 @@ namespace Qv2ray::Models
         {
             ProtocolInboundBase::Propagate(in);
             in.inboundSettings.protocolSettings[u"udp"_qs] = *EnableUDP;
-            if (UDPLocalAddress != u""_qs)
+            if (!UDPLocalAddress->isEmpty())
             {
                 in.inboundSettings.protocolSettings[u"ip"_qs] = *UDPLocalAddress;
             }
