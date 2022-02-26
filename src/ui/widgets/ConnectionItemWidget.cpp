@@ -31,7 +31,7 @@ ConnectionItemWidget::ConnectionItemWidget(const ProfileId &id, QWidget *parent)
     const auto latencyString = [](int latency)
     {
         if (latency == LATENCY_TEST_VALUE_NODATA)
-            return tr("Not Tested");
+            return QString();
         else if (latency == LATENCY_TEST_VALUE_ERROR)
             return tr("Error");
         else
