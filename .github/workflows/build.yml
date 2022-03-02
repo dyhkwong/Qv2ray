@@ -31,7 +31,7 @@ jobs:
         config:
         - {
             name: "Windows MSVC", artifact: "Windows",
-            os: windows-2019,
+            os: windows-latest,
             cc: "cl.exe", cxx: "cl.exe",
             arch: "win64_msvc2019_64",
             has_msvc: true,
