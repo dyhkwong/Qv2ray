@@ -30,6 +30,9 @@ namespace V2RayPluginNamespace
         void on_resetVCoreBtn_clicked();
         void on_resetVAssetBtn_clicked();
 
+        void on_vCoreAssetsPathTxt_textEdited(const QString &arg1);
+        void on_vCorePathTxt_textEdited(const QString &arg1);
+
       private:
         V2RayCorePluginSettings settingsObject;
     };

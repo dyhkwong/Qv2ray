@@ -16,8 +16,8 @@ class HttpOutboundEditor
     void Load() override
     {
         http.loadJson(settings);
-        http.user.ReadWriteBind(http_UserNameTxt, "text", &QLineEdit::textEdited);
-        http.pass.ReadWriteBind(http_PasswordTxt, "text", &QLineEdit::textEdited);
+        http_UserNameTxt->setText(http.user);
+        http_PasswordTxt->setText(http.pass);
     }
 
     void Store() override
@@ -27,6 +27,10 @@ class HttpOutboundEditor
 
   protected:
     void changeEvent(QEvent *e) override;
+
+  private slots:
+    void on_http_UserNameTxt_textEdited(const QString &arg1);
+    void on_http_PasswordTxt_textEdited(const QString &arg1);
 
   private:
     Qv2ray::Models::HTTPSOCKSObject http;

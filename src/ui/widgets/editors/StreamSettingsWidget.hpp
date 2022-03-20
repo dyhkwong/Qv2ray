@@ -26,6 +26,7 @@ class StreamSettingsWidget
     // HTTP
     void on_httpHostTxt_textChanged();
     void on_httpPathTxt_textEdited(const QString &arg1);
+    void on_httpMethodTxt_textEdited(const QString &arg1);
 
     // KCP
     void on_kcpCongestionCB_stateChanged(int arg1);
@@ -68,6 +69,7 @@ class StreamSettingsWidget
     void on_wsPathTxt_textEdited(const QString &arg1);
     void on_wsEarlyDataSB_valueChanged(int arg1);
     void on_wsBrowserForwardCB_stateChanged(int arg1);
+    void on_wsEarlyDataHeaderTxt_textEdited(const QString &arg1);
 
     // gRPC
     void on_grpcServiceNameTxt_textEdited(const QString &arg1);

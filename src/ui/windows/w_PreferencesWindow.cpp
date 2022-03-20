@@ -48,8 +48,10 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
     AppConfig.behaviorConfig->QuietMode.ReadWriteBind(quietModeCB, "checked", &QCheckBox::stateChanged);
     AppConfig.behaviorConfig->AutoConfigureSystemProxy.ReadWriteBind(autoConfSysProxyCB, "checked", &QCheckBox::stateChanged);
 
-    AppConfig.inboundConfig->ListenAddress1.ReadWriteBind(listenIP1Txt, "text", &QLineEdit::textEdited);
-    AppConfig.inboundConfig->ListenAddress2.ReadWriteBind(listenIP2Txt, "text", &QLineEdit::textEdited);
+    // AppConfig.inboundConfig->ListenAddress1.ReadWriteBind(listenIP1Txt, "text", &QLineEdit::textEdited);
+    // AppConfig.inboundConfig->ListenAddress2.ReadWriteBind(listenIP2Txt, "text", &QLineEdit::textEdited);
+    listenIP1Txt->setText(AppConfig.inboundConfig->ListenAddress1);
+    listenIP2Txt->setText(AppConfig.inboundConfig->ListenAddress2);
 
     AppConfig.connectionConfig->BypassLAN.ReadWriteBind(bypassLANCB, "checked", &QCheckBox::toggled);
     AppConfig.connectionConfig->BypassCN.ReadWriteBind(bypassCNCB, "checked", &QCheckBox::toggled);
@@ -102,7 +104,8 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
         // Socks UDP Options
         AppConfig.inboundConfig->SOCKSConfig->EnableUDP.Observe([this](const auto &newval) { socksUDPIP->setEnabled(newval); });
         AppConfig.inboundConfig->SOCKSConfig->EnableUDP.ReadWriteBind(socksUDPCB, "checked", &QCheckBox::stateChanged);
-        AppConfig.inboundConfig->SOCKSConfig->UDPLocalAddress.ReadWriteBind(socksUDPIP, "text", &QLineEdit::textEdited);
+        // AppConfig.inboundConfig->SOCKSConfig->UDPLocalAddress.ReadWriteBind(socksUDPIP, "text", &QLineEdit::textEdited);
+        socksUDPIP->setText(AppConfig.inboundConfig->SOCKSConfig->UDPLocalAddress);
 
         AppConfig.inboundConfig->SOCKSConfig->Sniffing.ReadWriteBind(socksSniffingCB, "currentIndex", &QComboBox::currentIndexChanged);
         AppConfig.inboundConfig->SOCKSConfig->RouteOnly.ReadWriteBind(socksRouteOnlyCB, "checked", &QCheckBox::stateChanged);
@@ -610,4 +613,19 @@ void PreferencesWindow::on_defaultLatencyTesterCB_currentIndexChanged(int)
 void PreferencesWindow::on_defaultKernelCB_currentIndexChanged(int)
 {
     AppConfig.behaviorConfig->DefaultKernelId = KernelId{ defaultKernelCB->currentData().toString() };
+}
+
+void PreferencesWindow::on_socksUDPIP_textEdited(const QString &arg1)
+{
+    AppConfig.inboundConfig->SOCKSConfig->UDPLocalAddress = arg1;
+}
+
+void PreferencesWindow::on_listenIP1Txt_textEdited(const QString &arg1)
+{
+    AppConfig.inboundConfig->ListenAddress1 = arg1;
+}
+
+void PreferencesWindow::on_listenIP2Txt_textEdited(const QString &arg1)
+{
+    AppConfig.inboundConfig->ListenAddress2 = arg1;
 }

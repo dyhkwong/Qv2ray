@@ -4,7 +4,6 @@ TrojanOutboundEditor::TrojanOutboundEditor(QWidget *parent) : Qv2rayPlugin::Gui:
 {
     setupUi(this);
     setProperty("QV2RAY_INTERNAL_HAS_STREAMSETTINGS", true);
-    trojan.password.ReadWriteBind(passwdTxt, "text", &QLineEdit::textEdited);
 }
 
 void TrojanOutboundEditor::changeEvent(QEvent *e)
@@ -15,4 +14,9 @@ void TrojanOutboundEditor::changeEvent(QEvent *e)
         case QEvent::LanguageChange: retranslateUi(this); break;
         default: break;
     }
+}
+
+void TrojanOutboundEditor::on_passwdTxt_textEdited(const QString &arg1)
+{
+    trojan.password = arg1;
 }

@@ -22,6 +22,11 @@ class VmessOutboundEditor
   private:
     Qv2ray::Models::VMessClientObject vmess;
 
+  private slots:
+    void on_securityCombo_currentTextChanged(const QString &arg1);
+    void on_idLineEdit_textChanged(const QString &arg1);
+    void on_experimentsTxt_textChanged(const QString &arg1);
+
   protected:
     void changeEvent(QEvent *e) override;
 };

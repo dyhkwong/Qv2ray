@@ -15,3 +15,12 @@ void SocksOutboundEditor::changeEvent(QEvent *e)
         default: break;
     }
 }
+
+void SocksOutboundEditor::on_socks_UserNameTxt_textEdited(const QString &arg1)
+{
+    socks.user = arg1;
+}
+void SocksOutboundEditor::on_socks_PasswordTxt_textEdited(const QString &arg1)
+{
+    socks.pass = arg1;
+}

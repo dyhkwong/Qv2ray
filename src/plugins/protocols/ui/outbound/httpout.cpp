@@ -15,3 +15,12 @@ void HttpOutboundEditor::changeEvent(QEvent *e)
         default: break;
     }
 }
+
+void HttpOutboundEditor::on_http_UserNameTxt_textEdited(const QString &arg1)
+{
+    http.user = arg1;
+}
+void HttpOutboundEditor::on_http_PasswordTxt_textEdited(const QString &arg1)
+{
+    http.pass = arg1;
+}

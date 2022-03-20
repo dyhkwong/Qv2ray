@@ -16,8 +16,8 @@ class SocksOutboundEditor
     virtual void Load() override
     {
         socks.loadJson(settings);
-        socks.user.ReadWriteBind(socks_UserNameTxt, "text", &QLineEdit::textEdited);
-        socks.pass.ReadWriteBind(socks_PasswordTxt, "text", &QLineEdit::textEdited);
+        socks_UserNameTxt->setText(socks.user);
+        socks_PasswordTxt->setText(socks.pass);
     }
 
     virtual void Store() override
@@ -27,6 +27,10 @@ class SocksOutboundEditor
 
   protected:
     void changeEvent(QEvent *e) override;
+
+  private slots:
+    void on_socks_UserNameTxt_textEdited(const QString &arg1);
+    void on_socks_PasswordTxt_textEdited(const QString &arg1);
 
   private:
     Qv2ray::Models::HTTPSOCKSObject socks;

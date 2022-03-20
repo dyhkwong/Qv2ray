@@ -9,9 +9,9 @@
 StreamSettingsWidget::StreamSettingsWidget(QWidget *parent) : QWidget(parent)
 {
     setupUi(this);
-    stream.wsSettings->earlyDataHeaderName.ReadWriteBind(wsEarlyDataHeaderTxt, "text", &QLineEdit::textEdited);
+    // stream.wsSettings->earlyDataHeaderName.ReadWriteBind(wsEarlyDataHeaderTxt, "text", &QLineEdit::textEdited);
     stream.sockopt->tcpKeepAliveInterval.ReadWriteBind(tcpKeepAliveIntervalSB, "value", &QSpinBox::valueChanged);
-    stream.httpSettings->method.ReadWriteBind(httpMethodTxt, "text", &QLineEdit::textEdited);
+    // stream.httpSettings->method.ReadWriteBind(httpMethodTxt, "text", &QLineEdit::textEdited);
 }
 
 Qv2ray::Models::StreamSettingsObject StreamSettingsWidget::GetStreamSettings() const
@@ -48,6 +48,7 @@ void StreamSettingsWidget::SetStreamObject(const Qv2ray::Models::StreamSettingsO
     {
         httpHostTxt->setPlainText(stream.httpSettings->host->join(NEWLINE));
         httpPathTxt->setText(stream.httpSettings->path);
+        httpMethodTxt->setText(stream.httpSettings->method);
     }
     // WS
     {
@@ -60,6 +61,7 @@ void StreamSettingsWidget::SetStreamObject(const Qv2ray::Models::StreamSettingsO
         wsHeadersTxt->setPlainText(wsHeaders);
         wsEarlyDataSB->setValue(stream.wsSettings->maxEarlyData);
         wsBrowserForwardCB->setChecked(stream.wsSettings->useBrowserForwarding);
+        wsEarlyDataHeaderTxt->setText(stream.wsSettings->earlyDataHeaderName);
     }
     // mKCP
     {
@@ -308,4 +310,14 @@ void StreamSettingsWidget::on_wsEarlyDataSB_valueChanged(int arg1)
 void StreamSettingsWidget::on_wsBrowserForwardCB_stateChanged(int arg1)
 {
     stream.wsSettings->useBrowserForwarding = arg1 == Qt::Checked;
+}
+
+void StreamSettingsWidget::on_wsEarlyDataHeaderTxt_textEdited(const QString &arg1)
+{
+    stream.wsSettings->earlyDataHeaderName = arg1;
+}
+
+void StreamSettingsWidget::on_httpMethodTxt_textEdited(const QString &arg1)
+{
+    stream.httpSettings->method = arg1;
 }

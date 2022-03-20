@@ -1,7 +1,5 @@
 #include "vmess.hpp"
 
-#include "BuiltinProtocolPlugin.hpp"
-
 VmessOutboundEditor::VmessOutboundEditor(QWidget *parent) : Qv2rayPlugin::Gui::PluginProtocolEditor(parent)
 {
     setupUi(this);
@@ -21,8 +19,22 @@ void VmessOutboundEditor::changeEvent(QEvent *e)
 void VmessOutboundEditor::Load()
 {
     vmess.loadJson(settings);
+    securityCombo->setCurrentText(vmess.security);
+    idLineEdit->setText(vmess.id);
+    experimentsTxt->setText(vmess.experiments);
+}
 
-    vmess.security.ReadWriteBind(securityCombo, "currentText", &QComboBox::currentIndexChanged);
-    vmess.id.ReadWriteBind(idLineEdit, "text", &QLineEdit::textEdited);
-    vmess.experiments.ReadWriteBind(experimentsTxt, "text", &QLineEdit::textEdited);
+void VmessOutboundEditor::on_securityCombo_currentTextChanged(const QString &arg1)
+{
+    vmess.security = arg1;
+}
+
+void VmessOutboundEditor::on_idLineEdit_textChanged(const QString &arg1)
+{
+    vmess.id = arg1;
+}
+
+void VmessOutboundEditor::on_experimentsTxt_textChanged(const QString &arg1)
+{
+    vmess.experiments = arg1;
 }

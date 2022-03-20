@@ -79,6 +79,10 @@ class PreferencesWindow
 
     void on_defaultKernelCB_currentIndexChanged(int index);
 
+    void on_socksUDPIP_textEdited(const QString &arg1);
+    void on_listenIP1Txt_textEdited(const QString &arg1);
+    void on_listenIP2Txt_textEdited(const QString &arg1);
+
   private:
     DnsSettingsWidget *dnsSettingsWidget;
     RouteSettingsMatrixWidget *routeSettingsWidget;

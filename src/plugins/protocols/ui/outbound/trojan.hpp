@@ -18,11 +18,15 @@ class TrojanOutboundEditor
     virtual void Load() override
     {
         trojan.loadJson(settings);
+        passwdTxt->setText(trojan.password);
     }
     void Store() override
     {
         settings = IOProtocolSettings{ trojan.toJson() };
     }
+
+  private slots:
+    void on_passwdTxt_textEdited(const QString &arg1);
 
   private:
     Qv2ray::Models::TrojanClientObject trojan;

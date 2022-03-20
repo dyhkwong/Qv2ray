@@ -16,6 +16,8 @@ class ShadowsocksOutboundEditor
     void Load() override
     {
         shadowsocks.loadJson(settings);
+        ss_passwordTxt->setText(shadowsocks.password);
+        ss_encryptionMethod->setCurrentText(shadowsocks.method);
     }
 
     void Store() override
@@ -25,6 +27,10 @@ class ShadowsocksOutboundEditor
 
   protected:
     void changeEvent(QEvent *e) override;
+
+  private slots:
+    void on_ss_encryptionMethod_currentTextChanged(const QString &arg1);
+    void on_ss_passwordTxt_textEdited(const QString &arg1);
 
   private:
     Qv2ray::Models::ShadowSocksClientObject shadowsocks;

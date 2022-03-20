@@ -14,8 +14,8 @@ V2RayKernelSettings::V2RayKernelSettings(QWidget *parent) : Qv2rayPlugin::Gui::P
     setupUi(this);
     settingsObject.APIEnabled.ReadWriteBind(enableAPI, "checked", &QCheckBox::toggled);
     settingsObject.APIPort.ReadWriteBind(statsPortBox, "value", &QSpinBox::valueChanged);
-    settingsObject.AssetsPath.ReadWriteBind(vCoreAssetsPathTxt, "text", &QLineEdit::textEdited);
-    settingsObject.CorePath.ReadWriteBind(vCorePathTxt, "text", &QLineEdit::textEdited);
+    // settingsObject.AssetsPath.ReadWriteBind(vCoreAssetsPathTxt, "text", &QLineEdit::textEdited);
+    // settingsObject.CorePath.ReadWriteBind(vCorePathTxt, "text", &QLineEdit::textEdited);
     settingsObject.LogLevel.ReadWriteBind(logLevelComboBox, "currentIndex", &QComboBox::currentIndexChanged);
     settingsObject.OutboundMark.ReadWriteBind(somarkSB, "value", &QSpinBox::valueChanged);
 }
@@ -33,6 +33,8 @@ void V2RayKernelSettings::changeEvent(QEvent *e)
 void V2RayKernelSettings::Load()
 {
     settingsObject.loadJson(settings);
+    vCoreAssetsPathTxt->setText(settingsObject.AssetsPath);
+    vCorePathTxt->setText(settingsObject.CorePath);
 }
 
 void V2RayKernelSettings::Store()
@@ -181,4 +183,14 @@ void V2RayKernelSettings::on_resetVCoreBtn_clicked()
 void V2RayKernelSettings::on_resetVAssetBtn_clicked()
 {
     settingsObject.AssetsPath = QString::fromUtf8(QV2RAY_DEFAULT_VASSETS_PATH);
+}
+
+void V2RayKernelSettings::on_vCoreAssetsPathTxt_textEdited(const QString &arg1)
+{
+    settingsObject.AssetsPath = arg1;
+}
+
+void V2RayKernelSettings::on_vCorePathTxt_textEdited(const QString &arg1)
+{
+    settingsObject.CorePath = arg1;
 }
