@@ -57,7 +57,7 @@ OutboundObject OutboundEditor::OpenEditor()
 QString OutboundEditor::GetFriendlyName()
 {
     const auto host = ipLineEdit->text().replace(':', '-').replace('/', '_').replace('\\', '_');
-    const auto port = portLineEdit->text().replace(':', '-').replace('/', '_').replace('\\', '_');
+    const auto port = portSB->text();
     return outboundTag.isEmpty() ? outboundProtocol + "@" + host + ":" + port : outboundTag;
 }
 
@@ -115,7 +115,7 @@ void OutboundEditor::reloadGUI()
             it->second->settings = settings;
             it->second->Load();
             ipLineEdit->setText(serverAddress);
-            portLineEdit->setText(QString::number(serverPort));
+            portSB->setValue(serverPort);
             processed = true;
             break;
         }
@@ -140,9 +140,9 @@ void OutboundEditor::on_ipLineEdit_textEdited(const QString &arg1)
     serverAddress = arg1;
 }
 
-void OutboundEditor::on_portLineEdit_textEdited(const QString &arg1)
+void OutboundEditor::on_portSB_valueChanged(int arg1)
 {
-    serverPort = arg1.toInt();
+    serverPort = arg1;
 }
 
 void OutboundEditor::on_tagTxt_textEdited(const QString &arg1)

@@ -28,7 +28,7 @@ class OutboundEditor
     void on_muxConcurrencyTxt_valueChanged(int arg1);
     void on_muxEnabledCB_stateChanged(int arg1);
     void on_outBoundTypeCombo_currentIndexChanged(int index);
-    void on_portLineEdit_textEdited(const QString &arg1);
+    void on_portSB_valueChanged(int arg1);
     void on_tagTxt_textEdited(const QString &arg1);
 
   private:

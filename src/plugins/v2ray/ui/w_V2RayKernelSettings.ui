@@ -223,10 +223,10 @@
       <item row="0" column="1">
        <widget class="QSpinBox" name="somarkSB">
         <property name="maximum">
-         <number>65535</number>
+         <number>2147483647</number>
         </property>
         <property name="value">
-         <number>39283</number>
+         <number>255</number>
         </property>
        </widget>
       </item>

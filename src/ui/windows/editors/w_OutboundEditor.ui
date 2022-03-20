@@ -115,12 +115,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="portLineEdit">
-           <property name="maxLength">
-            <number>5</number>
-           </property>
-           <property name="placeholderText">
-            <string>Port</string>
+          <widget class="QSpinBox" name="portSB">
+           <property name="maximum">
+            <number>65535</number>
            </property>
           </widget>
          </item>
@@ -222,7 +219,7 @@
  <tabstops>
   <tabstop>tagTxt</tabstop>
   <tabstop>ipLineEdit</tabstop>
-  <tabstop>portLineEdit</tabstop>
+  <tabstop>portSB</tabstop>
   <tabstop>outBoundTypeCombo</tabstop>
   <tabstop>muxEnabledCB</tabstop>
   <tabstop>muxConcurrencyTxt</tabstop>
