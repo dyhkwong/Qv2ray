@@ -74,12 +74,24 @@ namespace Qv2ray::Models
         virtual void Propagate(InboundObject &in) const
         {
             in.inboundSettings.port = ListenPort;
-            in.options[u"sniffing"_qs] = QJsonObject{
-                { u"enabled"_qs, Sniffing != SNIFFING_OFF },                             //
-                { u"metadataOnly"_qs, Sniffing == SNIFFING_METADATA_ONLY },              //
-                { u"destOverride"_qs, QJsonArray::fromStringList(DestinationOverride) }, //
-                { u"routeOnly"_qs, *RouteOnly },                                         //
-            };
+            auto obj = QJsonObject{ { u"enabled"_qs, Sniffing != SNIFFING_OFF } };
+            if (Sniffing != SNIFFING_OFF)
+            {
+                const auto destOverride = QJsonArray::fromStringList(DestinationOverride);
+                if (!destOverride.isEmpty())
+                {
+                    obj.insert(u"destOverride"_qs, destOverride);
+                }
+                if (Sniffing == SNIFFING_METADATA_ONLY)
+                {
+                    obj.insert(u"metadataOnly"_qs, Sniffing == SNIFFING_METADATA_ONLY);
+                }
+                if (Sniffing == SNIFFING_FULL && *RouteOnly)
+                {
+                    obj.insert(u"routeOnly"_qs, *RouteOnly);
+                }
+            }
+            in.options[u"sniffing"_qs] = obj;
         }
     };
 
