@@ -36,19 +36,19 @@ jobs:
             arch: "win64_msvc2019_64",
             has_msvc: true,
             has_release: true,
-            vcpkgTriplet: x64-windows
+            vcpkgTriplet: x64-windows,
           }
         - {
             name: "Ubuntu", artifact: "Linux",
             os: ubuntu-latest,
             has_release: false,
-            vcpkgTriplet: x64-linux
+            vcpkgTriplet: x64-linux,
           }
         - {
             name: "macOS", artifact: "macOS",
             os: macos-latest,
             has_release: true,
-            vcpkgTriplet: x64-osx
+            vcpkgTriplet: x64-osx,
           }
 
     steps:
@@ -75,7 +75,7 @@ jobs:
       uses: lukka/run-vcpkg@v7.3
       with:
         vcpkgArguments: protobuf openssl grpc
-        vcpkgGitCommitId: c69096659f49e2b1aca532ea5c2f8c135182519b
+        vcpkgGitCommitId: 01d6f6ff1e5332b926099f0c23bda996940ad4e8
         vcpkgTriplet: ${{ matrix.config.vcpkgTriplet }}
   
     - name: Build
