@@ -1,11 +1,19 @@
 {
 	"name": "qv2ray",
-	"version-string":  "0.0.1",
+	"version-string": "0.0.1",
 	"dependencies": [
 		"openssl",
 		"protobuf",
 		"grpc",
 		"libuv",
 		"uvw"
+	],
+	"builtin-baseline": "cc2dd8fed39acc588c9a9a04b1ea4d04ce5308f0",
+	"overrides": [
+		{
+			"name": "openssl",
+			"version-string": "1.1.1n",
+			"port-version": 1
+		}
 	]
 }
