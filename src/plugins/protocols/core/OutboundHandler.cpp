@@ -167,9 +167,18 @@ QString SerializeSS(const QString &name, const IOConnectionSettings &connection)
     Qv2ray::Models::ShadowSocksClientObject server;
     server.loadJson(connection.protocolSettings);
     QUrl url;
+    if (server.method->startsWith(u"2022"_qs))
+    {
+        url.setUserName(server.method);
+        url.setPassword(server.password);
+    }
+    else
+    {
+        const auto plainUserInfo = server.method + ":" + server.password;
+        const auto userinfo = plainUserInfo.toUtf8().toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
+        url.setUserInfo(userinfo);
+    }
     url.setScheme(u"ss"_qs);
-    url.setUserName(server.method);
-    url.setPassword(server.password);
     url.setHost(connection.address);
     url.setPort(connection.port.from);
     url.setFragment(name);

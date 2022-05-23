@@ -76,16 +76,6 @@
        <string notr="true">2022-blake3-chacha20-poly1305</string>
       </property>
      </item>
-     <item>
-      <property name="text">
-       <string notr="true">2022-blake3-chacha12-poly1305</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">2022-blake3-chacha8-poly1305</string>
-      </property>
-     </item>
     </widget>
    </item>
   </layout>
