@@ -290,7 +290,7 @@ void V2RaySNProfileGenerator::ProcessOutboundConfig(const OutboundObject &out)
             root[u"protocol"_qs] = u"shadowsocks_sing"_qs;
             root[u"settings"_qs] = QJsonObject{
                 { u"method"_qs, *ss.method },
-                { u"key"_qs, *ss.password },
+                { u"password"_qs, *ss.password },
                 { u"address"_qs, out.outboundSettings.address },
                 { u"port"_qs, out.outboundSettings.port.from },
             };
