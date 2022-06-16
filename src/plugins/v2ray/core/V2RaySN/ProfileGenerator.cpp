@@ -285,29 +285,14 @@ void V2RaySNProfileGenerator::ProcessOutboundConfig(const OutboundObject &out)
         Qv2ray::Models::ShadowSocksClientObject ss;
         ss.loadJson(out.outboundSettings.protocolSettings);
 
-        if (ss.method->startsWith(u"2022"_qs))
-        {
-            root[u"protocol"_qs] = u"shadowsocks_sing"_qs;
-            root[u"settings"_qs] = QJsonObject{
-                { u"method"_qs, *ss.method },
-                { u"password"_qs, *ss.password },
-                { u"address"_qs, out.outboundSettings.address },
-                { u"port"_qs, out.outboundSettings.port.from },
-            };
-        }
-        else
-        {
-            root[u"protocol"_qs] = u"shadowsocks"_qs;
-            QJsonObject singleServer{
-                { u"method"_qs, *ss.method },
-                { u"password"_qs, *ss.password },
-                { u"address"_qs, out.outboundSettings.address },
-                { u"port"_qs, out.outboundSettings.port.from },
-            };
-            root[u"settings"_qs] = QJsonObject{
-                { u"servers"_qs, QJsonArray{ singleServer } },
-            };
-        }
+        QJsonObject singleServer{
+            { u"method"_qs, *ss.method },
+            { u"password"_qs, *ss.password },
+            { u"address"_qs, out.outboundSettings.address },
+            { u"port"_qs, out.outboundSettings.port.from },
+        };
+
+        root[u"settings"_qs] = QJsonObject{ { u"servers"_qs, QJsonArray{ singleServer } } };
     }
 
     JsonStructHelper::MergeJson(root, out.options);
