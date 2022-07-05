@@ -1,4 +1,8 @@
-find_package(Protobuf REQUIRED)
+option(QV2RAY_AVOID_GRPC "Avoid GRPC" ON)
+
+if(NOT QV2RAY_AVOID_GRPC)
+    find_package(Protobuf REQUIRED)
+endif()
 
 add_library(V2RayStatsBackendAPI INTERFACE)
 add_library(V2RayPlugin::BackendDeps ALIAS V2RayStatsBackendAPI)
@@ -34,7 +38,11 @@ else()
         target_link_libraries(V2RayStatsBackendAPI INTERFACE gRPC::grpc++)
     endif()
 endif()
-target_link_libraries(V2RayStatsBackendAPI INTERFACE protobuf::libprotobuf)
+if(NOT QV2RAY_AVOID_GRPC)
+    target_link_libraries(V2RayStatsBackendAPI INTERFACE protobuf::libprotobuf)
+else()
+    target_link_libraries(V2RayStatsBackendAPI INTERFACE)
+endif()
 
 macro(generate_v2ray_grpc_source proto)
     get_filename_component(PROTO_ABS_DIR_PATH ${proto} DIRECTORY)

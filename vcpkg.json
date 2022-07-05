@@ -2,11 +2,7 @@
 	"name": "qv2ray",
 	"version-string": "0.0.1",
 	"dependencies": [
-		"openssl",
-		"protobuf",
-		"grpc",
-		"libuv",
-		"uvw"
+		"openssl"
 	],
 	"builtin-baseline": "cc2dd8fed39acc588c9a9a04b1ea4d04ce5308f0",
 	"overrides": [
