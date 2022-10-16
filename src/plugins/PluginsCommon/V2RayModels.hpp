@@ -43,6 +43,49 @@ namespace Qv2ray::Models
         }
     };
 
+    struct V2RayRoutingObject
+    {
+        enum Network
+        {
+            TCPUDP,
+            TCP,
+            UDP,
+        };
+
+        enum OutboundTag
+        {
+            Proxy,
+            Direct,
+            Block,
+        };
+
+        struct V2RayRoutingRuleObject
+        {
+            Bindable<bool> disabled;
+            Bindable<QString> ruleName;
+            Bindable<QList<QString>> domains;
+            Bindable<QList<QString>> ip;
+            Bindable<QString> port;
+            Bindable<QString> sourcePort;
+            Bindable<Network> network{ TCPUDP };
+            Bindable<QList<QString>> source;
+            Bindable<QList<QString>> protocol;
+            Bindable<OutboundTag> outboundTag;
+            QJS_COMPARE(V2RayRoutingRuleObject, disabled, ruleName, domains, ip, port, sourcePort, network, source, protocol, outboundTag);
+            QJS_JSON(P(ruleName, disabled, outboundTag), F(domains, ip, port, sourcePort, network, source, protocol));
+        };
+
+        Bindable<QList<V2RayRoutingRuleObject>> rules;
+        QJS_COMPARE(V2RayRoutingObject, rules);
+        QJS_JSON(F(rules));
+        static auto fromJson(const QJsonObject &o)
+        {
+            V2RayRoutingObject route;
+            route.loadJson(o);
+            return route;
+        }
+    };
+
     // We don't use any of the inheritance features, just here to ensure the Json level compatibility.
     struct V2RayDNSObject : public BasicDNSObject
     {

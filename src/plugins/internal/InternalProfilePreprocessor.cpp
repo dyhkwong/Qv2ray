@@ -37,7 +37,7 @@ inline RuleObject GenerateSingleRouteRule(const QStringList &rules, const QStrin
 }
 
 // -------------------------- BEGIN CONFIG GENERATIONS
-void ProcessRoutes(RoutingObject &root, bool ForceDirectConnection, bool bypassCN, bool bypassLAN, const QString &outTag, const RouteMatrixConfig &routeConfig)
+void ProcessRoutes(RoutingObject &root, bool ForceDirectConnection, bool bypassCN, bool bypassLAN, const QString &outTag, const RouteMatrixConfig &routeConfig, const V2RayRoutingObject &routeConfig_1)
 {
     root.extraOptions.insert(u"domainStrategy"_qs, *routeConfig.domainStrategy);
     root.extraOptions.insert(u"domainMatcher"_qs, *routeConfig.domainMatcher);
@@ -87,6 +87,40 @@ void ProcessRoutes(RoutingObject &root, bool ForceDirectConnection, bool bypassC
     }
 
     newRulesList << root.rules;
+
+    for (int i = 0; i < routeConfig_1.rules->size(); i++)
+    {
+        const auto rule = routeConfig_1.rules->at(i);
+        if (rule.disabled)
+            continue;
+        RuleObject newRule;
+        if (!rule.domains->isEmpty())
+            newRule.targetDomains = rule.domains->toList();
+        if (!rule.ip->isEmpty())
+            newRule.targetIPs = rule.ip->toList();
+        if (!rule.port->isEmpty())
+            newRule.targetPort = (QString)rule.port;
+        if (!rule.sourcePort->isEmpty())
+            newRule.sourcePort = (QString)rule.sourcePort;
+        if (!rule.source->isEmpty())
+            newRule.sourceAddresses = rule.source->toList();
+        if (!rule.protocol->isEmpty())
+            newRule.protocols = rule.protocol->toList();
+        if (rule.network == V2RayRoutingObject::Network::TCP)
+            newRule.networks = "tcp";
+        else if (rule.network == V2RayRoutingObject::Network::UDP)
+            newRule.networks = "udp";
+        //  else if ((r.network == V2RayRoutingObject::Network::TCPUDP))
+        //      newRule.networks = "tcp,udp";
+        if (rule.outboundTag == V2RayRoutingObject::OutboundTag::Proxy)
+            newRule.outboundTag = outTag;
+        else if (rule.outboundTag == V2RayRoutingObject::OutboundTag::Direct)
+            newRule.outboundTag = DEFAULT_FREEDOM_OUTBOUND_TAG;
+        else if (rule.outboundTag == V2RayRoutingObject::OutboundTag::Block)
+            newRule.outboundTag = DEFAULT_BLACKHOLE_OUTBOUND_TAG;
+        newRulesList << newRule;
+    }
+
     root.rules = newRulesList;
 }
 
@@ -148,13 +182,15 @@ ProfileContent InternalProfilePreprocessor::PreprocessProfile(const ProfileConte
     AddInbound(DokodemoDoor, "dokodemo-door", in.inboundSettings.streamSettings[u"sockopt"_qs] = QJsonObject{ { u"tproxy"_qs, dokoMode } });
 
     const auto routeMatrixConfig = RouteMatrixConfig::fromJson(result.routing.extraOptions[RouteMatrixConfig::EXTRA_OPTIONS_ID].toObject());
+    const auto routeConfig = V2RayRoutingObject::fromJson(result.routing.route);
 
     ProcessRoutes(result.routing,                                        //
                   GlobalConfig->connectionConfig->ForceDirectConnection, //
                   GlobalConfig->connectionConfig->BypassCN,              //
                   GlobalConfig->connectionConfig->BypassLAN,             //
                   result.outbounds.first().name,                         //
-                  routeMatrixConfig);
+                  routeMatrixConfig,                                     //
+                  routeConfig);
 
     if (GlobalConfig->connectionConfig->BypassBittorrent)
     {
@@ -192,7 +228,7 @@ ProfileContent InternalProfilePreprocessor::PreprocessProfile(const ProfileConte
             DNSOutbound.name = QString::fromUtf8(DNS_INTERCEPTION_OUTBOUND_TAG);
 
             RuleObject DNSRule;
-            DNSRule.targetPort = 53;
+            DNSRule.targetPort = "53";
             DNSRule.inboundTags = dnsRuleInboundTags;
             DNSRule.outboundTag = QString::fromUtf8(DNS_INTERCEPTION_OUTBOUND_TAG);
 

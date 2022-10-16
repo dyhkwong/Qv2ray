@@ -9,6 +9,7 @@
 
 class DnsSettingsWidget;
 class RouteSettingsMatrixWidget;
+class RouteSettingsWidget;
 class ConfigurableEditor;
 
 class GroupManager
@@ -67,6 +68,7 @@ class GroupManager
     ConfigurableEditor *subscriptionProviderOptionsEditor = nullptr;
     DnsSettingsWidget *dnsSettingsWidget = nullptr;
     RouteSettingsMatrixWidget *routeSettingsWidget = nullptr;
+    RouteSettingsWidget *routeSettingsWidget_1 = nullptr;
     //
     QMenu *connectionListRCMenu = new QMenu(this);
     QAction *deleteConnectionAction = new QAction(tr("Delete Connection(s)"), connectionListRCMenu);

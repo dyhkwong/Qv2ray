@@ -11,6 +11,7 @@
 #include "StyleManager/StyleManager.hpp"
 #include "ui/widgets/editors/DnsSettingsWidget.hpp"
 #include "ui/widgets/editors/RouteSettingsMatrix.hpp"
+#include "ui/widgets/editors/RouteSettingsWidget.hpp"
 
 #include <QColorDialog>
 #include <QCompleter>
@@ -214,6 +215,10 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
         routeSettingsWidget = new RouteSettingsMatrixWidget(this);
         routeSettingsWidget->SetRoute(RouteMatrixConfig::fromJson(defaultRouteObject.extraOptions[RouteMatrixConfig::EXTRA_OPTIONS_ID].toObject()));
         advRouteSettingsLayout->addWidget(routeSettingsWidget);
+
+        routeSettingsWidget_1 = new RouteSettingsWidget(this);
+        routeSettingsWidget_1->SetRoute(V2RayRoutingObject::fromJson(defaultRouteObject.route));
+        routeSettingsLayout->addWidget(routeSettingsWidget_1);
     }
 
     {
@@ -353,6 +358,14 @@ void PreferencesWindow::on_buttonBox_accepted()
     if (const auto newval = routeSettingsWidget->GetRouteConfig().toJson(); newval != defaultRouteObject.extraOptions[RouteMatrixConfig::EXTRA_OPTIONS_ID].toObject())
     {
         defaultRouteObject.extraOptions.insert(RouteMatrixConfig::EXTRA_OPTIONS_ID, newval);
+        NEEDRESTART
+    }
+
+    const auto &route = routeSettingsWidget_1->GetRouteConfig();
+
+    if (const auto newval = route.toJson(); defaultRouteObject.route != newval)
+    {
+        defaultRouteObject.route = newval;
         NEEDRESTART
     }
 

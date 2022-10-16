@@ -157,14 +157,14 @@ void V2RayProfileGenerator::ProcessRoutingRule(const RuleObject &r)
     if (!r.targetIPs.isEmpty())
         rule[u"ip"_qs] = QJsonArray::fromStringList(r.targetIPs);
 
-    if (r.targetPort.from != 0 && r.targetPort.to != 0)
-        rule[u"port"_qs] = (QString) r.targetPort;
+    if (!r.targetPort.isEmpty())
+        rule[u"port"_qs] = r.targetPort;
 
-    if (r.sourcePort.from != 0 && r.sourcePort.to != 0)
-        rule[u"sourcePort"_qs] = (QString) r.sourcePort;
+    if (!r.sourcePort.isEmpty())
+        rule[u"sourcePort"_qs] = r.sourcePort;
 
     if (!r.networks.isEmpty())
-        rule[u"network"_qs] = r.networks.join(u',');
+        rule[u"network"_qs] = r.networks;
 
     if (!r.sourceAddresses.isEmpty())
         rule[u"source"_qs] = QJsonArray::fromStringList(r.sourceAddresses);

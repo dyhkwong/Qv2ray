@@ -8,6 +8,7 @@
 #include "ui/widgets/ConfigurableEditorWidget.hpp"
 #include "ui/widgets/editors/DnsSettingsWidget.hpp"
 #include "ui/widgets/editors/RouteSettingsMatrix.hpp"
+#include "ui/widgets/editors/RouteSettingsWidget.hpp"
 
 #include <QFileDialog>
 
@@ -50,6 +51,10 @@ GroupManager::GroupManager(QWidget *parent) : QvDialog("GroupManager", parent)
 
     routeSettingsGB->setLayout(new QGridLayout(routeSettingsGB));
     routeSettingsGB->layout()->addWidget(routeSettingsWidget);
+
+    routeSettingsWidget_1 = new RouteSettingsWidget(this);
+    routeSettingsGB_1->setLayout(new QGridLayout(routeSettingsGB_1));
+    routeSettingsGB_1->layout()->addWidget(routeSettingsWidget_1);
 
     connectionListRCMenu->addSection(tr("Connection Management"));
     connectionListRCMenu->addAction(deleteConnectionAction);
@@ -136,6 +141,10 @@ void GroupManager::SaveCurrentGroup()
     QJsonObject fdns;
     fdns.insert("pools", pools);
     routing.fakedns = fdns;
+
+    const auto &route = routeSettingsWidget_1->GetRouteConfig();
+    routing.overrideRoute = routeSettingsGB_1->isChecked();
+    routing.route = route.toJson();
 
     const auto routematrix = routeSettingsWidget->GetRouteConfig();
     routing.extraOptions.insert(RouteMatrixConfig::EXTRA_OPTIONS_ID, routematrix.toJson());
@@ -389,6 +398,11 @@ void GroupManager::on_groupList_itemClicked(QListWidgetItem *item)
         c.loadJson(routingObject.extraOptions.value(RouteMatrixConfig::EXTRA_OPTIONS_ID));
         routeSettingsWidget->SetRoute(c);
         routeSettingsGB->setChecked(routingObject.overrideRules);
+
+        V2RayRoutingObject r;
+        r.loadJson(routingObject.route);
+        routeSettingsWidget_1->SetRoute(r);
+        routeSettingsGB_1->setChecked(routingObject.overrideRoute);
     }
     //
     // Import filters

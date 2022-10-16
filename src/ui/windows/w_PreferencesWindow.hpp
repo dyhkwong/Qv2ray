@@ -7,6 +7,7 @@
 
 class RouteSettingsMatrixWidget;
 class DnsSettingsWidget;
+class RouteSettingsWidget;
 
 class PreferencesWindow
     : public QvDialog
@@ -86,6 +87,7 @@ class PreferencesWindow
   private:
     DnsSettingsWidget *dnsSettingsWidget;
     RouteSettingsMatrixWidget *routeSettingsWidget;
+    RouteSettingsWidget *routeSettingsWidget_1;
     void SetAutoStartButtonsState(bool isAutoStart);
     bool NeedRestart = false;
     Qv2ray::Models::Qv2rayApplicationConfigObject AppConfig;
