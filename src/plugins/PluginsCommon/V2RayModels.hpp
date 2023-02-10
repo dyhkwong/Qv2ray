@@ -99,9 +99,18 @@ namespace Qv2ray::Models
             Bindable<QString> cacheStrategy; // null means following global cacheStrategy
             Bindable<QString> fallbackStrategy; // null means following global fallbackStrategy
             // Bindable<QString> domainMatcher{ u"mph"_qs }; // who tf need this?
-            QJS_COMPARE(V2RayDNSServerObject, QV2RAY_DNS_IS_COMPLEX_DNS, port, address, domains, expectIPs, tag, queryStrategy, cacheStrategy, fallbackStrategy);
-            QJS_JSON(P(QV2RAY_DNS_IS_COMPLEX_DNS, tag, queryStrategy, cacheStrategy, fallbackStrategy), F(address, port, domains, expectIPs))
+            Bindable<bool> fakedns{ false }; // wtf? fakedns can be bool or QList<QString> or QList<V2RayFakeDNSObject>
+            QJS_COMPARE(V2RayDNSServerObject, QV2RAY_DNS_IS_COMPLEX_DNS, port, address, domains, expectIPs, tag, queryStrategy, cacheStrategy, fallbackStrategy, fakedns);
+            QJS_JSON(P(QV2RAY_DNS_IS_COMPLEX_DNS, tag, queryStrategy, cacheStrategy, fallbackStrategy), F(address, port, domains, expectIPs, fakedns))
         };
+
+        struct V2RayFakeDNSObject
+        {
+            Bindable<QString> ipPool;
+            Bindable<int> poolSize;
+            QJS_COMPARE(V2RayFakeDNSObject, ipPool, poolSize)
+            QJS_JSON(F(ipPool, poolSize))
+         };
 
         Bindable<QList<V2RayDNSServerObject>> servers;
         Bindable<QString> clientIp;
@@ -110,25 +119,12 @@ namespace Qv2ray::Models
         Bindable<QString> cacheStrategy{ u"enabled"_qs };
         Bindable<QString> fallbackStrategy{ u"enabled"_qs };
         Bindable<QString> domainMatcher{ u"mph"_qs };
-        QJS_COMPARE(V2RayDNSObject, servers, clientIp, tag, queryStrategy, cacheStrategy, fallbackStrategy, domainMatcher, servers, hosts, extraOptions);
-        QJS_JSON(P(clientIp, tag, queryStrategy, cacheStrategy, fallbackStrategy), F(servers, hosts, domainMatcher, extraOptions));
+        Bindable<QList<V2RayFakeDNSObject>> fakedns;
+        QJS_COMPARE(V2RayDNSObject, servers, clientIp, tag, queryStrategy, cacheStrategy, fallbackStrategy, domainMatcher, fakedns, servers, hosts, extraOptions);
+        QJS_JSON(P(clientIp, tag, queryStrategy, cacheStrategy, fallbackStrategy, fakedns), F(servers, hosts, domainMatcher, extraOptions));
         static auto fromJson(const QJsonObject &o)
         {
             V2RayDNSObject dns;
-            dns.loadJson(o);
-            return dns;
-        }
-    };
-
-    struct V2RayFakeDNSObject
-    {
-        Bindable<QString> ipPool;
-        Bindable<int> poolSize;
-        QJS_COMPARE(V2RayFakeDNSObject, ipPool, poolSize)
-        QJS_JSON(F(ipPool, poolSize))
-        static auto fromJson(const QJsonObject &o)
-        {
-            V2RayFakeDNSObject dns;
             dns.loadJson(o);
             return dns;
         }

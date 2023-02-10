@@ -129,18 +129,9 @@ void GroupManager::SaveCurrentGroup()
     const auto groupObject = QvProfileManager->GetGroupObject(currentGroupId);
     auto routing = QvProfileManager->GetRouting(groupObject.route_id);
 
-    const auto &[dns, fakedns] = dnsSettingsWidget->GetDNSObject();
+    const auto &dns = dnsSettingsWidget->GetDNSObject();
     routing.overrideDNS = dnsSettingsGB->isChecked();
     routing.dns = dns.toJson();
-
-    QJsonArray pools;
-    for (const auto &pool : fakedns)
-    {
-        pools.append(pool.toJson());
-    }
-    QJsonObject fdns;
-    fdns.insert("pools", pools);
-    routing.fakedns = fdns;
 
     const auto &route = routeSettingsWidget_1->GetRouteConfig();
     routing.overrideRoute = routeSettingsGB_1->isChecked();
@@ -385,12 +376,7 @@ void GroupManager::on_groupList_itemClicked(QListWidgetItem *item)
     {
         const auto routingObject = QvProfileManager->GetRouting(routeId);
 
-        QList<V2RayFakeDNSObject> pools;
-        for (const auto &pool : routingObject.fakedns["pools"].toArray())
-        {
-            pools.append(V2RayFakeDNSObject::fromJson(pool.toObject()));
-        }
-        dnsSettingsWidget->SetDNSObject(V2RayDNSObject::fromJson(routingObject.dns), pools);
+        dnsSettingsWidget->SetDNSObject(V2RayDNSObject::fromJson(routingObject.dns));
 
         dnsSettingsGB->setChecked(routingObject.overrideDNS);
         //

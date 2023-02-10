@@ -17,8 +17,8 @@ class DnsSettingsWidget
 
   public:
     explicit DnsSettingsWidget(QWidget *parent = nullptr);
-    void SetDNSObject(const Qv2ray::Models::V2RayDNSObject &dns, const QList<Qv2ray::Models::V2RayFakeDNSObject> &fakeDNS);
-    std::pair<Qv2ray::Models::V2RayDNSObject, QList<Qv2ray::Models::V2RayFakeDNSObject>> GetDNSObject();
+    void SetDNSObject(const Qv2ray::Models::V2RayDNSObject &dns);
+    Qv2ray::Models::V2RayDNSObject GetDNSObject();
     bool CheckIsValidDNS() const;
 
   private slots:
@@ -42,6 +42,7 @@ class DnsSettingsWidget
     void on_queryStrategyCB_currentTextChanged(const QString &arg1);
     void on_cacheStrategyCB_currentTextChanged(const QString &arg1);
     void on_fallbackStrategyCB_currentTextChanged(const QString &arg1);
+    void on_fakeDNSCB_stateChanged(int arg1);
 
   private:
     void updateColorScheme();

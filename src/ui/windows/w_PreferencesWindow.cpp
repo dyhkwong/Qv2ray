@@ -203,12 +203,7 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) : QvDialog(u"PreferenceWin
         const auto defaultRouteObject = QvProfileManager->GetRouting();
         dnsSettingsWidget = new DnsSettingsWidget(this);
 
-        QList<V2RayFakeDNSObject> pools;
-        for (const auto &pool : defaultRouteObject.fakedns["pools"].toArray())
-        {
-            pools.append(V2RayFakeDNSObject::fromJson(pool.toObject()));
-        }
-        dnsSettingsWidget->SetDNSObject(V2RayDNSObject::fromJson(defaultRouteObject.dns), pools);
+        dnsSettingsWidget->SetDNSObject(V2RayDNSObject::fromJson(defaultRouteObject.dns));
 
         dnsSettingsLayout->addWidget(dnsSettingsWidget);
 
@@ -369,24 +364,11 @@ void PreferencesWindow::on_buttonBox_accepted()
         NEEDRESTART
     }
 
-    const auto &[dns, fakedns] = dnsSettingsWidget->GetDNSObject();
+    const auto &dns = dnsSettingsWidget->GetDNSObject();
 
     if (const auto newval = dns.toJson(); defaultRouteObject.dns != newval)
     {
         defaultRouteObject.dns = newval;
-        NEEDRESTART
-    }
-
-    QJsonArray pools;
-    for (const auto &pool : fakedns)
-    {
-        pools.append(pool.toJson());
-    }
-    if (defaultRouteObject.fakedns["pools"].toArray() != pools)
-    {
-        QJsonObject newval;
-        newval.insert("pools", pools);
-        defaultRouteObject.fakedns = newval;
         NEEDRESTART
     }
 

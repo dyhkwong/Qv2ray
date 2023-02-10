@@ -139,9 +139,6 @@ QByteArray V2Ray5ProfileGenerator::Generate()
     if (!profile.routing.dns.isEmpty())
         rootconf[u"dns"_qs] = profile.routing.dns;
 
-    if (!profile.routing.fakedns[u"pools"_qs].toArray().isEmpty())
-        rootconf[u"fakedns"_qs] = profile.routing.fakedns[u"pools"_qs];
-
     OutboundMarkSettingFilter(rootconf, settings.OutboundMark);
 
     return QJsonDocument(rootconf).toJson(QJsonDocument::Indented);

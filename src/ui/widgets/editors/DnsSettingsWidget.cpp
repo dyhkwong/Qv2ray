@@ -64,7 +64,7 @@ QvMessageBusSlotImpl(DnsSettingsWidget)
     }
 }
 
-void DnsSettingsWidget::SetDNSObject(const Qv2ray::Models::V2RayDNSObject &_dns, const QList<Qv2ray::Models::V2RayFakeDNSObject> &_fakeDNS)
+void DnsSettingsWidget::SetDNSObject(const Qv2ray::Models::V2RayDNSObject &_dns)
 {
     this->dns = _dns;
 
@@ -96,16 +96,17 @@ void DnsSettingsWidget::SetDNSObject(const Qv2ray::Models::V2RayDNSObject &_dns,
     dnsFallbackStrategyCB->setCurrentText(dns.fallbackStrategy);
 
     // WARNING TODO: BAD HACK need list model
-    if (!_fakeDNS.isEmpty())
+    if (dns.fakedns->size() > 0)
     {
-        fakeDNSIPPool->setCurrentText(_fakeDNS.first().ipPool);
-        fakeDNSIPPoolSize->setValue(_fakeDNS.first().poolSize);
-        if (_fakeDNS.size() > 1)
+        fakeDNSIPPool->setCurrentText(dns.fakedns->first().ipPool);
+        fakeDNSIPPoolSize->setValue(dns.fakedns->first().poolSize);
+        if (dns.fakedns->size() > 1)
         {
-            fakeDNSIPv6Pool->setCurrentText(_fakeDNS.at(1).ipPool);
-            fakeDNSIPv6PoolSize->setValue(_fakeDNS.at(1).poolSize);
+            fakeDNSIPv6Pool->setCurrentText(dns.fakedns->at(1).ipPool);
+            fakeDNSIPv6PoolSize->setValue(dns.fakedns->at(1).poolSize);
         }
     }
+
     UPDATE_UI_ENABLED_STATE
 }
 
@@ -130,6 +131,7 @@ void DnsSettingsWidget::ProcessDnsPortEnabledState()
         queryStrategyCB->setEnabled(true);
         cacheStrategyCB->setEnabled(true);
         fallbackStrategyCB->setEnabled(true);
+        fakeDNSCB->setEnabled(true);
     }
 }
 
@@ -145,6 +147,7 @@ void DnsSettingsWidget::ShowCurrentDnsServerDetails()
     queryStrategyCB->setCurrentText((*dns.servers)[currentServerIndex].queryStrategy);
     cacheStrategyCB->setCurrentText((*dns.servers)[currentServerIndex].cacheStrategy);
     fallbackStrategyCB->setCurrentText((*dns.servers)[currentServerIndex].fallbackStrategy);
+    fakeDNSCB->setChecked((*dns.servers)[currentServerIndex].fakedns);
 
     detailsSettingsGB->setChecked((*dns.servers)[currentServerIndex].QV2RAY_DNS_IS_COMPLEX_DNS);
     //
@@ -159,7 +162,7 @@ void DnsSettingsWidget::ShowCurrentDnsServerDetails()
     ProcessDnsPortEnabledState();
 }
 
-std::pair<Qv2ray::Models::V2RayDNSObject, QList<Qv2ray::Models::V2RayFakeDNSObject>> DnsSettingsWidget::GetDNSObject()
+Qv2ray::Models::V2RayDNSObject DnsSettingsWidget::GetDNSObject()
 {
     dns.hosts.clear();
     for (auto i = 0; i < staticResolvedDomainsTable->rowCount(); i++)
@@ -169,13 +172,13 @@ std::pair<Qv2ray::Models::V2RayDNSObject, QList<Qv2ray::Models::V2RayFakeDNSObje
         if (item1 && item2)
             dns.hosts.insert(item1->text(), item2->text());
     }
-
-    QList<Qv2ray::Models::V2RayFakeDNSObject> fakeDNS;
+    QList<Qv2ray::Models::V2RayDNSObject::V2RayFakeDNSObject> fakedns;
     if (!fakeDNSIPPool->currentText().isEmpty())
-        fakeDNS.append(V2RayFakeDNSObject{ { fakeDNSIPPool->currentText() }, fakeDNSIPPoolSize->value() });
+        fakedns.append(Qv2ray::Models::V2RayDNSObject::V2RayFakeDNSObject{ { fakeDNSIPPool->currentText() }, fakeDNSIPPoolSize->value() });
     if (!fakeDNSIPv6Pool->currentText().isEmpty())
-        fakeDNS.append(V2RayFakeDNSObject{ { fakeDNSIPv6Pool->currentText() }, fakeDNSIPv6PoolSize->value() });
-    return { dns, fakeDNS };
+        fakedns.append(Qv2ray::Models::V2RayDNSObject::V2RayFakeDNSObject{ { fakeDNSIPv6Pool->currentText() }, fakeDNSIPv6PoolSize->value() });
+    dns.fakedns = fakedns;
+    return dns;
 }
 
 void DnsSettingsWidget::on_dnsClientIPTxt_textEdited(const QString &arg1)
@@ -195,6 +198,7 @@ void DnsSettingsWidget::on_addServerBtn_clicked()
     o.queryStrategy = u"UseIP"_qs;
     o.cacheStrategy = u"enabled"_qs;
     o.fallbackStrategy = u"enabled"_qs;
+    o.fakedns = false;
     dns.servers->push_back(o);
     serversListbox->addItem(o.address);
     serversListbox->setCurrentRow(serversListbox->count() - 1);
@@ -341,4 +345,9 @@ void DnsSettingsWidget::on_cacheStrategyCB_currentTextChanged(const QString &arg
 void DnsSettingsWidget::on_fallbackStrategyCB_currentTextChanged(const QString &arg1)
 {
     (*dns.servers)[currentServerIndex].fallbackStrategy = arg1;
+}
+
+void DnsSettingsWidget::on_fakeDNSCB_stateChanged(int arg1)
+{
+    (*dns.servers)[currentServerIndex].fakedns = arg1 == Qt::Checked;
 }
