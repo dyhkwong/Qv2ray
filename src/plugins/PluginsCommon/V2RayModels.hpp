@@ -89,32 +89,29 @@ namespace Qv2ray::Models
     // We don't use any of the inheritance features, just here to ensure the Json level compatibility.
     struct V2RayDNSObject : public BasicDNSObject
     {
-        enum QueryStrategy
-        {
-            UseIP,
-            UseIPv4,
-            UseIPv6,
-        };
-
-        // Same as above.
         struct V2RayDNSServerObject : public BasicDNSServerObject
         {
             Bindable<bool> QV2RAY_DNS_IS_COMPLEX_DNS{ false };
-            Bindable<bool> SkipFallback{ false };
             Bindable<QList<QString>> domains;
             Bindable<QList<QString>> expectIPs;
-            QJS_COMPARE(V2RayDNSServerObject, QV2RAY_DNS_IS_COMPLEX_DNS, SkipFallback, port, address, domains, expectIPs);
-            QJS_JSON(P(QV2RAY_DNS_IS_COMPLEX_DNS, SkipFallback), F(address, port, domains, expectIPs))
+            Bindable<QString> tag;
+            Bindable<QString> queryStrategy; // null means following global queryStrategy
+            Bindable<QString> cacheStrategy; // null means following global cacheStrategy
+            Bindable<QString> fallbackStrategy; // null means following global fallbackStrategy
+            // Bindable<QString> domainMatcher{ u"mph"_qs }; // who tf need this?
+            QJS_COMPARE(V2RayDNSServerObject, QV2RAY_DNS_IS_COMPLEX_DNS, port, address, domains, expectIPs, tag, queryStrategy, cacheStrategy, fallbackStrategy);
+            QJS_JSON(P(QV2RAY_DNS_IS_COMPLEX_DNS, tag, queryStrategy, cacheStrategy, fallbackStrategy), F(address, port, domains, expectIPs))
         };
 
         Bindable<QList<V2RayDNSServerObject>> servers;
         Bindable<QString> clientIp;
         Bindable<QString> tag;
-        Bindable<bool> disableCache{ false };
-        Bindable<bool> disableFallback{ false };
         Bindable<QString> queryStrategy{ u"UseIP"_qs };
-        QJS_COMPARE(V2RayDNSObject, servers, clientIp, tag, disableCache, disableFallback, queryStrategy, servers, hosts, extraOptions);
-        QJS_JSON(P(clientIp, tag, disableCache, disableFallback, queryStrategy), F(servers, hosts, extraOptions));
+        Bindable<QString> cacheStrategy{ u"enabled"_qs };
+        Bindable<QString> fallbackStrategy{ u"enabled"_qs };
+        Bindable<QString> domainMatcher{ u"mph"_qs };
+        QJS_COMPARE(V2RayDNSObject, servers, clientIp, tag, queryStrategy, cacheStrategy, fallbackStrategy, domainMatcher, servers, hosts, extraOptions);
+        QJS_JSON(P(clientIp, tag, queryStrategy, cacheStrategy, fallbackStrategy), F(servers, hosts, domainMatcher, extraOptions));
         static auto fromJson(const QJsonObject &o)
         {
             V2RayDNSObject dns;

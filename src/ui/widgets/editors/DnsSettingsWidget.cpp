@@ -90,9 +90,10 @@ void DnsSettingsWidget::SetDNSObject(const Qv2ray::Models::V2RayDNSObject &_dns,
     }
     staticResolvedDomainsTable->resizeColumnsToContents();
 
+    dnsDomainMatcherCB->setCurrentText(dns.domainMatcher);
     dnsQueryStrategyCB->setCurrentText(dns.queryStrategy);
-    dnsDisableFallbackCB->setChecked(dns.disableFallback);
-    dnsDisableCacheCB->setChecked(dns.disableCache);
+    dnsCacheStrategyCB->setCurrentText(dns.cacheStrategy);
+    dnsFallbackStrategyCB->setCurrentText(dns.fallbackStrategy);
 
     // WARNING TODO: BAD HACK need list model
     if (!_fakeDNS.isEmpty())
@@ -126,6 +127,9 @@ void DnsSettingsWidget::ProcessDnsPortEnabledState()
     {
         const auto isDoHDoT = serverAddressTxt->text().startsWith("https:") || serverAddressTxt->text().startsWith("https+");
         serverPortSB->setEnabled(!isDoHDoT);
+        queryStrategyCB->setEnabled(true);
+        cacheStrategyCB->setEnabled(true);
+        fallbackStrategyCB->setEnabled(true);
     }
 }
 
@@ -137,6 +141,11 @@ void DnsSettingsWidget::ShowCurrentDnsServerDetails()
     ipListTxt->setPlainText((*dns.servers)[currentServerIndex].expectIPs->join('\n'));
     //
     serverPortSB->setValue((*dns.servers)[currentServerIndex].port);
+
+    queryStrategyCB->setCurrentText((*dns.servers)[currentServerIndex].queryStrategy);
+    cacheStrategyCB->setCurrentText((*dns.servers)[currentServerIndex].cacheStrategy);
+    fallbackStrategyCB->setCurrentText((*dns.servers)[currentServerIndex].fallbackStrategy);
+
     detailsSettingsGB->setChecked((*dns.servers)[currentServerIndex].QV2RAY_DNS_IS_COMPLEX_DNS);
     //
     if (serverAddressTxt->text().isEmpty() || IsValidV2RayDNSServer(serverAddressTxt->text()))
@@ -183,6 +192,9 @@ void DnsSettingsWidget::on_addServerBtn_clicked()
     Qv2ray::Models::V2RayDNSObject::V2RayDNSServerObject o;
     o.address = u"1.1.1.1"_qs;
     o.port = 53;
+    o.queryStrategy = u"UseIP"_qs;
+    o.cacheStrategy = u"enabled"_qs;
+    o.fallbackStrategy = u"enabled"_qs;
     dns.servers->push_back(o);
     serversListbox->addItem(o.address);
     serversListbox->setCurrentRow(serversListbox->count() - 1);
@@ -296,17 +308,37 @@ void DnsSettingsWidget::on_detailsSettingsGB_toggled(bool arg1)
     // detailsSettingsGB->setChecked(dns.servers[currentServerIndex].QV2RAY_DNS_IS_COMPLEX_DNS);
 }
 
-void DnsSettingsWidget::on_dnsDisableCacheCB_stateChanged(int arg1)
+void DnsSettingsWidget::on_dnsDomainMatcherCB_currentTextChanged(const QString &arg1)
 {
-    dns.disableCache = arg1 == Qt::Checked;
-}
-
-void DnsSettingsWidget::on_dnsDisableFallbackCB_stateChanged(int arg1)
-{
-    dns.disableFallback = arg1 == Qt::Checked;
+    dns.domainMatcher = arg1;
 }
 
 void DnsSettingsWidget::on_dnsQueryStrategyCB_currentTextChanged(const QString &arg1)
 {
     dns.queryStrategy = arg1;
+}
+
+void DnsSettingsWidget::on_dnsCacheStrategyCB_currentTextChanged(const QString &arg1)
+{
+    dns.cacheStrategy = arg1;
+}
+
+void DnsSettingsWidget::on_dnsFallbackStrategyCB_currentTextChanged(const QString &arg1)
+{
+    dns.fallbackStrategy = arg1;
+}
+
+void DnsSettingsWidget::on_queryStrategyCB_currentTextChanged(const QString &arg1)
+{
+    (*dns.servers)[currentServerIndex].queryStrategy = arg1;
+}
+
+void DnsSettingsWidget::on_cacheStrategyCB_currentTextChanged(const QString &arg1)
+{
+    (*dns.servers)[currentServerIndex].cacheStrategy = arg1;
+}
+
+void DnsSettingsWidget::on_fallbackStrategyCB_currentTextChanged(const QString &arg1)
+{
+    (*dns.servers)[currentServerIndex].fallbackStrategy = arg1;
 }
