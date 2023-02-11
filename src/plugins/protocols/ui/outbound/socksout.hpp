@@ -18,6 +18,7 @@ class SocksOutboundEditor
         socks.loadJson(settings);
         socks_UserNameTxt->setText(socks.user);
         socks_PasswordTxt->setText(socks.pass);
+        socks_VersionCB->setCurrentText(socks.version);
     }
 
     virtual void Store() override
@@ -31,6 +32,7 @@ class SocksOutboundEditor
   private slots:
     void on_socks_UserNameTxt_textEdited(const QString &arg1);
     void on_socks_PasswordTxt_textEdited(const QString &arg1);
+    void on_socks_VersionCB_currentTextChanged(const QString &arg1);
 
   private:
     Qv2ray::Models::HTTPSOCKSObject socks;

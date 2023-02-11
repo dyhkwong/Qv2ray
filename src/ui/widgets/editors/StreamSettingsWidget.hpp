@@ -44,12 +44,15 @@ class StreamSettingsWidget
     void on_quicKeyTxt_textEdited(const QString &arg1);
     void on_quicSecurityCB_currentIndexChanged(int arg1);
 
-    // TLS/XTLS
+    // TLS
     void on_alpnTxt_textEdited(const QString &arg1);
-    void on_disableSessionResumptionCB_stateChanged(int arg1);
+    void on_enableSessionResumptionCB_stateChanged(int arg1);
     void on_securityTypeCB_currentIndexChanged(int arg1);
     void on_serverNameTxt_textEdited(const QString &arg1);
     void on_disableSystemRoot_stateChanged(int arg1);
+    void on_allowInsecureCB_stateChanged(int arg1);
+    void on_pinnedPeerCertificateChainSha256Txt_textEdited(const QString &arg1);
+    void on_utlsFingerprintCB_currentTextChanged(const QString &arg1);
     void on_openCertEditorBtn_clicked();
 
     // TCP

@@ -240,7 +240,7 @@ void V2RaySNProfileGenerator::ProcessOutboundConfig(const OutboundObject &out)
         root[u"settings"_qs] = QJsonObject{ { u"servers"_qs, QJsonArray{ singleServer } } };
     }
 
-    if (out.outboundSettings.protocol == u"http"_qs || out.outboundSettings.protocol == u"socks"_qs)
+    if (out.outboundSettings.protocol == u"http"_qs)
     {
         Qv2ray::Models::HTTPSOCKSObject serv;
         serv.loadJson(out.outboundSettings.protocolSettings);
@@ -257,6 +257,25 @@ void V2RaySNProfileGenerator::ProcessOutboundConfig(const OutboundObject &out)
         }
 
         root[u"settings"_qs] = QJsonObject{ { u"servers"_qs, QJsonArray{ singleServer } } };
+    }
+
+    if (out.outboundSettings.protocol == u"socks"_qs)
+    {
+        Qv2ray::Models::HTTPSOCKSObject serv;
+        serv.loadJson(out.outboundSettings.protocolSettings);
+
+        QJsonObject singleServer{
+            { u"address"_qs, out.outboundSettings.address },
+            { u"port"_qs, out.outboundSettings.port.from },
+        };
+
+        if (!serv.user->isEmpty() || !serv.pass->isEmpty())
+        {
+            QJsonObject userobject{ { u"user"_qs, *serv.user }, { u"pass"_qs, *serv.pass } };
+            singleServer[u"users"_qs] = QJsonArray{ userobject };
+        }
+
+        root[u"settings"_qs] = QJsonObject{{ u"servers"_qs, QJsonArray{ singleServer } }, { u"version"_qs, *serv.version } };
     }
 
     if (out.outboundSettings.protocol == u"vmess"_qs)

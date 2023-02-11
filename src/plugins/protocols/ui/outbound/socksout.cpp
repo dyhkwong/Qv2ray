@@ -24,3 +24,8 @@ void SocksOutboundEditor::on_socks_PasswordTxt_textEdited(const QString &arg1)
 {
     socks.pass = arg1;
 }
+
+void SocksOutboundEditor::on_socks_VersionCB_currentTextChanged(const QString &arg1)
+{
+    socks.version = arg1;
+}

@@ -272,12 +272,15 @@ namespace Qv2ray::Models
         struct TLSObject
         {
             Bindable<QString> serverName;
-            Bindable<bool> disableSessionResumption{ true };
+            Bindable<bool> enableSessionResumption{ false };
             Bindable<bool> disableSystemRoot{ false };
             Bindable<QList<QString>> alpn;
             Bindable<QList<CertificateObject>> certificates;
-            QJS_COMPARE(TLSObject, serverName, disableSessionResumption, disableSystemRoot, alpn, certificates);
-            QJS_JSON(P(serverName, disableSessionResumption, disableSystemRoot, alpn, certificates))
+            Bindable<bool> allowInsecure{ false }; // required for pinnedPeerCertificateChainSha256
+            Bindable<QList<QString>> pinnedPeerCertificateChainSha256;
+            Bindable<QString> fingerprint;
+            QJS_COMPARE(TLSObject, serverName, enableSessionResumption, disableSystemRoot, alpn, certificates, allowInsecure, pinnedPeerCertificateChainSha256, fingerprint);
+            QJS_JSON(P(serverName, enableSessionResumption, disableSystemRoot, alpn, certificates, allowInsecure, pinnedPeerCertificateChainSha256, fingerprint))
         };
     } // namespace transfer
 
@@ -314,8 +317,9 @@ namespace Qv2ray::Models
     {
         Bindable<QString> user;
         Bindable<QString> pass;
+        Bindable<QString> version{ u"5"_qs };
         Bindable<int> level{ 0 };
-        QJS_JSON(P(user, pass, level))
+        QJS_JSON(P(user, pass, version, level))
     };
 
     // ShadowSocks Server
