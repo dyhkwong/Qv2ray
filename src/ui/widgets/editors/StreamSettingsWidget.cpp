@@ -329,7 +329,7 @@ void StreamSettingsWidget::on_allowInsecureCB_stateChanged(int arg1)
 
 void StreamSettingsWidget::on_pinnedPeerCertificateChainSha256Txt_textEdited(const QString &arg1)
 {
-    stream.tlsSettings->pinnedPeerCertificateChainSha256 = arg1.split("|");
+    stream.tlsSettings->pinnedPeerCertificateChainSha256 = arg1.split("|", Qt::SplitBehaviorFlags::SkipEmptyParts);
 }
 
 void StreamSettingsWidget::on_utlsFingerprintCB_currentTextChanged(const QString &arg1)
