@@ -72,17 +72,38 @@ jobs:
         setup-python: false
 
     - name: run-vcpkg
+      if: matrix.config.os != 'macos-latest'
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgGitCommitId: "b08025687f75908191b1e6c67925d46ea0f398dd"
         vcpkgJsonGlob: '**/vcpkg.json'
         runVcpkgInstall: true
-  
+
+    - name: macOS - Install OpenSSL
+      if: matrix.config.os == 'macos-latest'
+      run: |
+        brew install openssl@3
+        echo "OPENSSL_ROOT_DIR=$(brew --prefix openssl@3)" >> $GITHUB_ENV
+
     - name: Build
+      if: matrix.config.os != 'macos-latest'
       run: |
         mkdir build; cd build
         cmake .. \
           -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=Qv2ray \
+          -DBUILD_TESTING=OFF \
+          -DUSE_SYSTEM_LIBUV=OFF \
+          -DUSE_SYSTEM_UVW=OFF \
+          -GNinja
+        cmake --build . --parallel
+
+    - name: macOS - Build
+      if: matrix.config.os == 'macos-latest'
+      run: |
+        mkdir build; cd build
+        cmake .. \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX=Qv2ray \
           -DBUILD_TESTING=OFF \
