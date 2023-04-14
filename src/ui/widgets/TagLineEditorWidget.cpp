@@ -20,7 +20,7 @@ TagEntryWidget::TagEntryWidget(const QString &name, QWidget *parent) : QFrame(pa
 
     const auto deleteAction = new QAction(tr("Delete Tag"), this);
     addAction(deleteAction);
-    connect(deleteAction, &QAction::triggered, this, [this] { emit OnTagDeleted(text, {}); });
+    connect(deleteAction, &QAction::triggered, this, [this] { emit OnTagDeleted(text, QPrivateSignal{}); });
 
     setStyleSheet(ClearStyle);
     setObjectName(u"_tagframe"_qs);
