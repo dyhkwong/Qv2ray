@@ -19,7 +19,6 @@ class DnsSettingsWidget
     explicit DnsSettingsWidget(QWidget *parent = nullptr);
     void SetDNSObject(const Qv2ray::Models::V2RayDNSObject &dns);
     Qv2ray::Models::V2RayDNSObject GetDNSObject();
-    bool CheckIsValidDNS() const;
 
   private slots:
     void on_dnsClientIPTxt_textEdited(const QString &arg1);

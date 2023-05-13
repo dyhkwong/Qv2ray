@@ -343,12 +343,6 @@ void PreferencesWindow::on_buttonBox_accepted()
         return;
     }
 
-    if (!dnsSettingsWidget->CheckIsValidDNS())
-    {
-        QvBaselib->Warn(tr("Preferences"), tr("Invalid DNS Settings."));
-        return;
-    }
-
     auto defaultRouteObject = QvProfileManager->GetRouting();
     if (const auto newval = routeSettingsWidget->GetRouteConfig().toJson(); newval != defaultRouteObject.extraOptions[RouteMatrixConfig::EXTRA_OPTIONS_ID].toObject())
     {

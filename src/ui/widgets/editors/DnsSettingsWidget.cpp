@@ -110,18 +110,6 @@ void DnsSettingsWidget::SetDNSObject(const Qv2ray::Models::V2RayDNSObject &_dns)
     UPDATE_UI_ENABLED_STATE
 }
 
-bool DnsSettingsWidget::CheckIsValidDNS() const
-{
-    if (!dns.clientIp->isEmpty() && !IsValidIPAddress(dns.clientIp))
-        return false;
-    for (const auto &server : *dns.servers)
-    {
-        if (!IsValidV2RayDNSServer(server.address))
-            return false;
-    }
-    return true;
-}
-
 void DnsSettingsWidget::ProcessDnsPortEnabledState()
 {
     if (detailsSettingsGB->isChecked())
@@ -150,15 +138,7 @@ void DnsSettingsWidget::ShowCurrentDnsServerDetails()
     fakeDNSCB->setChecked((*dns.servers)[currentServerIndex].fakedns);
 
     detailsSettingsGB->setChecked((*dns.servers)[currentServerIndex].QV2RAY_DNS_IS_COMPLEX_DNS);
-    //
-    if (serverAddressTxt->text().isEmpty() || IsValidV2RayDNSServer(serverAddressTxt->text()))
-    {
-        BLACK(serverAddressTxt);
-    }
-    else
-    {
-        RED(serverAddressTxt);
-    }
+
     ProcessDnsPortEnabledState();
 }
 
@@ -270,14 +250,6 @@ void DnsSettingsWidget::on_serverAddressTxt_textEdited(const QString &arg1)
 {
     (*dns.servers)[currentServerIndex].address = arg1;
     serversListbox->currentItem()->setText(arg1);
-    if (arg1.isEmpty() || IsValidV2RayDNSServer(arg1))
-    {
-        BLACK(serverAddressTxt);
-    }
-    else
-    {
-        RED(serverAddressTxt);
-    }
 
     ProcessDnsPortEnabledState();
 }
