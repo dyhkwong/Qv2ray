@@ -75,7 +75,7 @@ jobs:
       if: matrix.config.os != 'macos-latest'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: "1c5a340f6e10985e2d92af174a68dbd15c1fa4e1"
+        vcpkgGitCommitId: "dafef74af53669ef1cc9015f55e0ce809ead62aa"
         vcpkgJsonGlob: '**/vcpkg.json'
         runVcpkgInstall: true
 
