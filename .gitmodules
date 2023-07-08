@@ -10,6 +10,3 @@
 [submodule "src/Qv2rayBase"]
 	path = src/Qv2rayBase
 	url = https://github.com/dyhkwong/Qv2rayBase.git
-[submodule "src/plugins/routingA/core"]
-	path = src/plugins/routingA/core
-	url = https://github.com/moodyhunter/libRoutingA.git

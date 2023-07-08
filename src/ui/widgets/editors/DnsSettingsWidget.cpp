@@ -1,6 +1,5 @@
 #include "DnsSettingsWidget.hpp"
 
-#include "GeositeReader/GeositeReader.hpp"
 #include "Qv2rayBase/Common/Utils.hpp"
 #include "ui/WidgetUIBase.hpp"
 #include "ui/widgets/AutoCompleteTextEdit.hpp"
@@ -36,8 +35,8 @@ DnsSettingsWidget::DnsSettingsWidget(QWidget *parent) : QWidget(parent)
     setupUi(this);
     QvMessageBusConnect();
 
-    auto sourceStringsIP = GeositeReader::ReadGeoSiteFromFile(GlobalConfig->behaviorConfig->GeoIPPath);
-    auto sourceStringsDomain = GeositeReader::ReadGeoSiteFromFile(GlobalConfig->behaviorConfig->GeoSitePath);
+    const QStringList sourceStringsIP;
+    const QStringList sourceStringsDomain;
 
     domainListTxt = new AutoCompleteTextEdit("geosite", sourceStringsDomain, this);
     ipListTxt = new AutoCompleteTextEdit("geoip", sourceStringsIP, this);

@@ -1,6 +1,5 @@
 #include "RouteSettingsMatrix.hpp"
 
-#include "GeositeReader/GeositeReader.hpp"
 #include "Qv2rayBase/Common/Utils.hpp"
 #include "ui/WidgetUIBase.hpp"
 
@@ -25,12 +24,12 @@ RouteSettingsMatrixWidget::RouteSettingsMatrixWidget(QWidget *parent) : QWidget(
 
     builtInSchemeBtn->setMenu(builtInSchemesMenu);
 
-    const auto sourceStringsDomain = GeositeReader::ReadGeoSiteFromFile(GlobalConfig->behaviorConfig->GeoSitePath);
+    const QStringList sourceStringsDomain;
     directDomainTxt = new AutoCompleteTextEdit(u"geosite"_qs, sourceStringsDomain, this);
     proxyDomainTxt = new AutoCompleteTextEdit(u"geosite"_qs, sourceStringsDomain, this);
     blockDomainTxt = new AutoCompleteTextEdit(u"geosite"_qs, sourceStringsDomain, this);
 
-    const auto sourceStringsIP = GeositeReader::ReadGeoSiteFromFile(GlobalConfig->behaviorConfig->GeoIPPath);
+    const QStringList sourceStringsIP;
     directIPTxt = new AutoCompleteTextEdit(u"geoip"_qs, sourceStringsIP, this);
     proxyIPTxt = new AutoCompleteTextEdit(u"geoip"_qs, sourceStringsIP, this);
     blockIPTxt = new AutoCompleteTextEdit(u"geoip"_qs, sourceStringsIP, this);
