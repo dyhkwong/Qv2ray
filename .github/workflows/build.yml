@@ -54,7 +54,7 @@ jobs:
           }
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
@@ -68,14 +68,14 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: 6.5.1
+        version: 6.5.2
         setup-python: false
 
     - name: run-vcpkg
       if: matrix.config.os != 'macos-latest'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: "dafef74af53669ef1cc9015f55e0ce809ead62aa"
+        vcpkgGitCommitId: "e8c2a04eb7ca058b6e2f0e6e33c67fdbffeee846"
         vcpkgJsonGlob: '**/vcpkg.json'
         runVcpkgInstall: true
 
