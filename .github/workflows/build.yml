@@ -59,7 +59,7 @@ jobs:
         submodules: 'recursive'
 
     - name: Install ninja-build tool
-      uses: seanmiddleditch/gha-setup-ninja@v3
+      uses: seanmiddleditch/gha-setup-ninja@v4
 
     - name: Install MSVC compiler
       if: matrix.config.has_msvc
@@ -68,14 +68,14 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: 6.5.2
+        version: 6.6.0
         setup-python: false
 
     - name: run-vcpkg
       if: matrix.config.os != 'macos-latest'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: "e8c2a04eb7ca058b6e2f0e6e33c67fdbffeee846"
+        vcpkgGitCommitId: "486a4640db740f5994e492eb60748111dfc48de7"
         vcpkgJsonGlob: '**/vcpkg.json'
         runVcpkgInstall: true
 
