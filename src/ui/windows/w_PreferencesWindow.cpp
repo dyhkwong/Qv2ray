@@ -454,7 +454,7 @@ void PreferencesWindow::on_tproxyOverrideHTTPCB_stateChanged(int arg1)
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->removeAll("http");
     else if (!AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->contains("http"))
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->append(u"http"_qs);
-    AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_tproxyOverrideTLSCB_stateChanged(int arg1)
@@ -464,7 +464,7 @@ void PreferencesWindow::on_tproxyOverrideTLSCB_stateChanged(int arg1)
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->removeAll("tls");
     else if (!AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->contains("tls"))
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->append(u"tls"_qs);
-    AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_tproxyOverrideQUICCB_stateChanged(int arg1)
@@ -474,7 +474,7 @@ void PreferencesWindow::on_tproxyOverrideQUICCB_stateChanged(int arg1)
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->removeAll("quic");
     else if (!AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->contains("quic"))
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->append(u"quic"_qs);
-    AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_tproxyOverrideFakeDNSCB_stateChanged(int arg1)
@@ -484,7 +484,7 @@ void PreferencesWindow::on_tproxyOverrideFakeDNSCB_stateChanged(int arg1)
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->removeAll("fakedns");
     else if (!AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->contains("fakedns"))
         AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride->append(u"fakedns"_qs);
-    AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->DokodemoDoorConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_httpOverrideHTTPCB_stateChanged(int arg1)
@@ -494,7 +494,7 @@ void PreferencesWindow::on_httpOverrideHTTPCB_stateChanged(int arg1)
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride->removeAll("http");
     else if (!AppConfig.inboundConfig->HTTPConfig->DestinationOverride->contains("http"))
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride->append(u"http"_qs);
-    AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_httpOverrideTLSCB_stateChanged(int arg1)
@@ -504,7 +504,7 @@ void PreferencesWindow::on_httpOverrideTLSCB_stateChanged(int arg1)
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride->removeAll("tls");
     else if (!AppConfig.inboundConfig->HTTPConfig->DestinationOverride->contains("tls"))
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride->append(u"tls"_qs);
-    AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_httpOverrideQUICCB_stateChanged(int arg1)
@@ -514,7 +514,7 @@ void PreferencesWindow::on_httpOverrideQUICCB_stateChanged(int arg1)
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride->removeAll("quic");
     else if (!AppConfig.inboundConfig->HTTPConfig->DestinationOverride->contains("quic"))
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride->append(u"quic"_qs);
-    AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_httpOverrideFakeDNSCB_stateChanged(int arg1)
@@ -524,7 +524,7 @@ void PreferencesWindow::on_httpOverrideFakeDNSCB_stateChanged(int arg1)
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride->removeAll("fakedns");
     else if (!AppConfig.inboundConfig->HTTPConfig->DestinationOverride->contains("fakedns"))
         AppConfig.inboundConfig->HTTPConfig->DestinationOverride->append(u"fakedns"_qs);
-    AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->HTTPConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_socksOverrideHTTPCB_stateChanged(int arg1)
@@ -534,7 +534,7 @@ void PreferencesWindow::on_socksOverrideHTTPCB_stateChanged(int arg1)
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->removeAll("http");
     else if (!AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->contains("http"))
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->append(u"http"_qs);
-    AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_socksOverrideTLSCB_stateChanged(int arg1)
@@ -544,7 +544,7 @@ void PreferencesWindow::on_socksOverrideTLSCB_stateChanged(int arg1)
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->removeAll("tls");
     else if (!AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->contains("tls"))
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->append(u"tls"_qs);
-    AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_socksOverrideQUICCB_stateChanged(int arg1)
@@ -554,7 +554,7 @@ void PreferencesWindow::on_socksOverrideQUICCB_stateChanged(int arg1)
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->removeAll("quic");
     else if (!AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->contains("quic"))
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->append(u"quic"_qs);
-    AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_socksOverrideFakeDNSCB_stateChanged(int arg1)
@@ -564,7 +564,7 @@ void PreferencesWindow::on_socksOverrideFakeDNSCB_stateChanged(int arg1)
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->removeAll("fakedns");
     else if (!AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->contains("fakedns"))
         AppConfig.inboundConfig->SOCKSConfig->DestinationOverride->append(u"fakedns"_qs);
-    AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
+    //AppConfig.inboundConfig->SOCKSConfig->DestinationOverride.EmitNotify();
 }
 
 void PreferencesWindow::on_noAutoConnectRB_clicked()
