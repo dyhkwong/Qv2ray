@@ -69,7 +69,6 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: 6.6.1
-        setup-python: false
 
     - name: run-vcpkg
       if: matrix.config.os != 'macos-latest'
