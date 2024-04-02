@@ -35,7 +35,7 @@ jobs:
             name: "Windows MSVC", artifact: "Windows",
             os: windows-latest,
             cc: "cl.exe", cxx: "cl.exe",
-            arch: "win64_msvc2019_64",
+            arch: "win64_msvc2022_64",
             has_msvc: true,
             has_release: true,
             vcpkgTriplet: x64-windows,
@@ -68,13 +68,13 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: 6.6.1
+        version: 6.7.0
 
     - name: run-vcpkg
       if: matrix.config.os != 'macos-latest'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: "3bc5ff7f7ab72b57f0945d35bbbdaac2060bc268"
+        vcpkgGitCommitId: "a164ace504d8fe6f50aeec7e235d22b9089ad0d5"
         vcpkgJsonGlob: '**/vcpkg.json'
         runVcpkgInstall: true
 
