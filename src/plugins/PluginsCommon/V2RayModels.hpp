@@ -181,6 +181,14 @@ namespace Qv2ray::Models
             QJS_JSON(P(type))
         };
 
+        struct CongestionObject
+        {
+            Bindable<int> up_mbps{ 0 };
+            Bindable<int> down_mbps{ 0 };
+            QJS_COMPARE(CongestionObject, up_mbps, down_mbps);
+            QJS_JSON(P(up_mbps, down_mbps))
+        };
+
         struct TCPObject
         {
             Bindable<TCPHeader_Internal> header;
@@ -248,6 +256,15 @@ namespace Qv2ray::Models
             QJS_JSON(P(serviceName))
         };
 
+        struct Hy2Object
+        {
+            Bindable<QString> password;
+            Bindable<bool> use_udp_extension{ false };
+            Bindable<CongestionObject> congestion;
+            QJS_COMPARE(Hy2Object, password, use_udp_extension, congestion);
+            QJS_JSON(P(password, use_udp_extension, congestion))
+        };
+
         struct SockoptObject
         {
             Bindable<int> mark{ 255 };
@@ -297,9 +314,11 @@ namespace Qv2ray::Models
         Bindable<transfer::DomainSocketObject> dsSettings;
         Bindable<transfer::QuicObject> quicSettings;
         Bindable<transfer::gRPCObject> grpcSettings;
+        Bindable<transfer::Hy2Object> hy2Settings;
         QJS_COMPARE(StreamSettingsObject, network, security, sockopt, tlsSettings, tcpSettings, kcpSettings, wsSettings, httpSettings, dsSettings, quicSettings,
-                    grpcSettings);
-        QJS_JSON(P(network, security, sockopt, tlsSettings, tcpSettings, kcpSettings, wsSettings, httpSettings, dsSettings, quicSettings, grpcSettings))
+                    grpcSettings, hy2Settings);
+        QJS_JSON(P(network, security, sockopt, tlsSettings, tcpSettings, kcpSettings, wsSettings, httpSettings, dsSettings, quicSettings, grpcSettings,
+                   hy2Settings))
         static inline auto fromJson(const QJsonObject &o)
         {
             StreamSettingsObject stream;

@@ -77,6 +77,12 @@ class StreamSettingsWidget
     // gRPC
     void on_grpcServiceNameTxt_textEdited(const QString &arg1);
 
+    // Hy2
+    void on_hy2PasswordTxt_textEdited(const QString &arg1);
+    void on_hy2UseUDPExtensionCB_stateChanged(int arg1);
+    void on_hy2UpMbpsSB_valueChanged(int arg1);
+    void on_hy2DownMbpsSB_valueChanged(int arg1);
+
   private:
     Qv2ray::Models::StreamSettingsObject stream;
 };

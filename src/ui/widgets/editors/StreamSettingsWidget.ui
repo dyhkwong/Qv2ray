@@ -669,6 +669,77 @@
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="hy2StackPage">
+          <layout class="QFormLayout" name="formLayout_1000">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_1000">
+             <property name="text">
+              <string>Password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="hy2PasswordTxt">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QCheckBox" name="hy2UseUDPExtensionCB">
+             <property name="text">
+              <string>Use UDP Extension</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_1001">
+             <property name="text">
+              <string>Congestion</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_1000" stretch="1,1">
+             <item>
+              <widget class="QSpinBox" name="hy2UpMbpsSB">
+               <property name="suffix">
+                <string notr="true"> mbps</string>
+               </property>
+               <property name="prefix">
+                <string>Up: </string>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="hy2DownMbpsSB">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="suffix">
+                <string notr="true"> mbps</string>
+               </property>
+               <property name="prefix">
+                <string>Down: </string>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
        <item row="0" column="0">
@@ -715,6 +786,11 @@
            <item>
             <property name="text">
              <string notr="true">grpc</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">hysteria2</string>
             </property>
            </item>
           </widget>

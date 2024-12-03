@@ -311,6 +311,16 @@ void V2Ray5ProfileGenerator::ProcessOutboundConfig(const OutboundObject &out)
         root[u"settings"_qs] = QJsonObject{ { u"servers"_qs, QJsonArray{ singleServer } } };
     }
 
+    if (out.outboundSettings.protocol == u"hysteria2"_qs)
+    {
+        QJsonObject singleServer{
+            { u"address"_qs, out.outboundSettings.address },
+            { u"port"_qs, out.outboundSettings.port.from },
+        };
+
+        root[u"settings"_qs] = QJsonObject{ { u"servers"_qs, QJsonArray{ singleServer } } };
+    }
+
     JsonStructHelper::MergeJson(root, out.options);
     outbounds << root;
 }

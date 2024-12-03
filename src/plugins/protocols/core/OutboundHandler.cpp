@@ -19,11 +19,13 @@ using namespace Qv2ray::Models;
 QString SerializeVMess(const QString &name, const IOConnectionSettings &connection);
 QString SerializeSS(const QString &name, const IOConnectionSettings &connection);
 QString SerializeTrojan(const QString &name, const IOConnectionSettings &connection);
+QString SerializeHysteria2(const QString &name, const IOConnectionSettings &connection);
 
 std::optional<std::pair<QString, IOConnectionSettings>> DeserializeVMess(const QString &link);
 std::optional<std::pair<QString, IOConnectionSettings>> DeserializeSS(const QString &link);
 std::optional<std::pair<QString, IOConnectionSettings>> DeserializeOldVMess(const QString &link);
 std::optional<std::pair<QString, IOConnectionSettings>> DeserializeTrojan(const QString &link);
+std::optional<std::pair<QString, IOConnectionSettings>> DeserializeHysteria2(const QString &link);
 
 std::optional<QString> BuiltinSerializer::Serialize(const QString &name, const IOConnectionSettings &outbound) const
 {
@@ -53,6 +55,9 @@ std::optional<QString> BuiltinSerializer::Serialize(const QString &name, const I
     if (protocol == u"trojan"_qs)
         return SerializeTrojan(name, outbound);
 
+    if (protocol == u"hysteria2"_qs)
+        return SerializeHysteria2(name, outbound);
+
     return std::nullopt;
 }
 
@@ -78,6 +83,9 @@ std::optional<std::pair<QString, IOConnectionSettings>> BuiltinSerializer::Deser
 
     if (link.startsWith(u"trojan://"_qs))
         return DeserializeTrojan(link);
+
+    if (link.startsWith(u"hysteria2://"_qs) || link.startsWith(u"hy2://"_qs))
+        return DeserializeHysteria2(link);
 
     return std::nullopt;
 }
@@ -206,6 +214,46 @@ QString SerializeTrojan(const QString &name, const IOConnectionSettings &connect
     return url.toString(QUrl::ComponentFormattingOption::FullyEncoded);
 }
 
+QString SerializeHysteria2(const QString &alias, const IOConnectionSettings &connection)
+{
+    Qv2ray::Models::StreamSettingsObject stream;
+    stream.loadJson(connection.streamSettings);
+
+    QUrl url;
+    url.setFragment(alias, QUrl::StrictMode);
+
+    if (stream.network == u"hysteria2"_qs)
+    {
+        url.setUserName(stream.hy2Settings->password);
+        if (stream.security == u"tls"_qs)
+        {
+            QUrlQuery q{ url.query() };
+            if (!stream.tlsSettings->serverName->isEmpty())
+            {
+                
+                q.addQueryItem(u"sni"_qs, stream.tlsSettings->serverName);
+                
+            }
+            if (stream.tlsSettings->allowInsecure)
+                q.addQueryItem("insecure", "1");
+            url.setQuery(q);
+        }
+        else
+        {
+            return {};
+        }
+    }
+    else
+    {
+        return {};
+    }
+
+    url.setScheme(u"hysteria2"_qs);
+    url.setHost(connection.address);
+    url.setPort(connection.port.from);
+    return url.toString(QUrl::ComponentFormattingOption::FullyEncoded);
+}
+
 std::optional<std::pair<QString, IOConnectionSettings>> DeserializeTrojan(const QString &link)
 {
     QUrl url{ link };
@@ -223,6 +271,33 @@ std::optional<std::pair<QString, IOConnectionSettings>> DeserializeTrojan(const 
         stream.tlsSettings->serverName = q.queryItemValue(u"sni"_qs);
         conn.streamSettings = stream;
     }
+
+    return std::make_pair(url.fragment(), conn);
+}
+
+std::optional<std::pair<QString, IOConnectionSettings>> DeserializeHysteria2(const QString &link)
+{
+    QUrl url{ link };
+    IOConnectionSettings conn;
+    conn.address = url.host();
+    conn.port = url.port(443);
+    conn.protocol = u"hysteria2"_qs;
+
+    QUrlQuery q{ url.query() };
+    Qv2ray::Models::StreamSettingsObject stream;
+    stream.security = u"tls"_qs;
+    stream.network = u"hysteria2"_qs;
+    stream.hy2Settings->use_udp_extension = true;
+    stream.hy2Settings->password = url.userName();
+    if (q.hasQueryItem(u"sni"_qs))
+    {
+        stream.tlsSettings->serverName = q.queryItemValue(u"sni"_qs);
+    }
+    if (q.hasQueryItem(u"insecure"_qs))
+    {
+        stream.tlsSettings->allowInsecure = q.queryItemValue(u"insecure"_qs) == "1";
+    }
+    conn.streamSettings = stream;
 
     return std::make_pair(url.fragment(), conn);
 }

@@ -9,6 +9,7 @@
 #include "outbound/dns.hpp"
 #include "outbound/freedom.hpp"
 #include "outbound/httpout.hpp"
+#include "outbound/hysteria2.hpp"
 #include "outbound/loopback.hpp"
 #include "outbound/shadowsocks.hpp"
 #include "outbound/socksout.hpp"
@@ -49,6 +50,7 @@ class ProtocolGUIInterface : public Gui::Qv2rayGUIInterface
             make_editor_info<ShadowsocksOutboundEditor>("shadowsocks", "Shadowsocks"), //
             make_editor_info<HttpOutboundEditor>("http", "HTTP"),                      //
             make_editor_info<SocksOutboundEditor>("socks", "SOCKS"),                   //
+            make_editor_info<Hysteria2OutboundEditor>("hysteria2", "Hysteria2"),       //
             make_editor_info<FreedomOutboundEditor>("freedom", "Freedom"),             //
             make_editor_info<BlackholeOutboundEditor>("blackhole", "Blackhole"),       //
             make_editor_info<DnsOutboundEditor>("dns", "DNS"),                         //

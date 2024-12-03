@@ -191,6 +191,7 @@ const std::map<StatisticsObject::StatisticsType, QStringList> DefaultOutboundAPI
           u"socks"_qs,
           u"vmess"_qs,
           u"trojan"_qs,
+          u"hysteria2"_qs,
       } },
     { StatisticsObject::DIRECT,
       {
