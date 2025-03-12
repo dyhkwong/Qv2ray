@@ -121,7 +121,7 @@ jobs:
       run: cd build && 7z a ../Qv2ray.7z -- ./Qv2ray
 
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Qv2ray-${{ github.sha }}-${{ matrix.config.artifact }}.7z
         path: Qv2ray.7z
