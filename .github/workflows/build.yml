@@ -96,7 +96,8 @@ jobs:
           -DBUILD_TESTING=OFF \
           -DUSE_SYSTEM_LIBUV=OFF \
           -DUSE_SYSTEM_UVW=OFF \
-          -GNinja
+          -GNinja \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
         cmake --build . --parallel
 
     - name: macOS - Build
@@ -109,7 +110,8 @@ jobs:
           -DBUILD_TESTING=OFF \
           -DUSE_SYSTEM_LIBUV=OFF \
           -DUSE_SYSTEM_UVW=OFF \
-          -GNinja
+          -GNinja \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
         cmake --build . --parallel
 
     - name: Install
