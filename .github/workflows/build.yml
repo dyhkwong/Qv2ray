@@ -68,14 +68,14 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.8.2
+        version: 6.8.3
         arch: ${{ matrix.config.arch }}
 
     - name: run-vcpkg
       if: matrix.config.os != 'macos-latest'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: "aac8812f26c3d13ea42bc1baaffae273385911aa"
+        vcpkgGitCommitId: "460551b0ec06be1ba6b918448bf3b0f44add813d"
         vcpkgJsonGlob: '**/vcpkg.json'
         runVcpkgInstall: true
 
