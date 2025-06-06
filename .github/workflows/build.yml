@@ -23,8 +23,6 @@ jobs:
     env:
       CC: ${{ matrix.config.cc }}
       CXX: ${{ matrix.config.cxx }}
-      VCPKG_DEFAULT_TRIPLET: ${{ matrix.config.vcpkgTriplet }}
-      VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg_installed/
     name: '${{ matrix.config.name }}'
     runs-on: ${{ matrix.config.os }}
     strategy:
@@ -38,19 +36,16 @@ jobs:
             arch: "win64_msvc2022_64",
             has_msvc: true,
             has_release: true,
-            vcpkgTriplet: x64-windows,
           }
         - {
             name: "Ubuntu", artifact: "Linux",
             os: ubuntu-latest,
             has_release: false,
-            vcpkgTriplet: x64-linux,
           }
         - {
             name: "macOS", artifact: "macOS",
             os: macos-latest,
             has_release: true,
-            vcpkgTriplet: x64-osx,
           }
 
     steps:
@@ -71,37 +66,7 @@ jobs:
         version: 6.9.1
         arch: ${{ matrix.config.arch }}
 
-    - name: run-vcpkg
-      if: matrix.config.os != 'macos-latest'
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgGitCommitId: "984f9232b2fe0eb94f5e9f161d6c632c581fff0c"
-        vcpkgJsonGlob: '**/vcpkg.json'
-        runVcpkgInstall: true
-
-    - name: macOS - Install OpenSSL
-      if: matrix.config.os == 'macos-latest'
-      run: |
-        brew install openssl@3
-        echo "OPENSSL_ROOT_DIR=$(brew --prefix openssl@3)" >> $GITHUB_ENV
-
     - name: Build
-      if: matrix.config.os != 'macos-latest'
-      run: |
-        mkdir build; cd build
-        cmake .. \
-          -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=Qv2ray \
-          -DBUILD_TESTING=OFF \
-          -DUSE_SYSTEM_LIBUV=OFF \
-          -DUSE_SYSTEM_UVW=OFF \
-          -GNinja \
-          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
-        cmake --build . --parallel
-
-    - name: macOS - Build
-      if: matrix.config.os == 'macos-latest'
       run: |
         mkdir build; cd build
         cmake .. \

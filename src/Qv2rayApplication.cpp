@@ -18,7 +18,6 @@
 #include <QUrlQuery>
 #include <QVersionNumber>
 #include <QtPlugin>
-#include <openssl/ssl.h>
 
 constexpr auto QV2RAY_GUI_EXTRASETTINGS_KEY = "qv2ray-gui-settings";
 
@@ -32,12 +31,6 @@ Q_IMPORT_PLUGIN(Qv2rayInternalPlugin);
 
 Qv2rayApplication::Qv2rayApplication(int &argc, char *argv[]) : SingleApplication(argc, argv, true, User | ExcludeAppPath | ExcludeAppVersion)
 {
-    // These no-op function calls ensures libssl and libcrypto are linked against Qv2ray.
-    // Forcing the deployment of libssl and libcrypto libraries.
-    // So that the OpenSSL TLS backend can be used by Qt Network.
-    // TODO Find a workaround without this hack.
-    Q_UNUSED(SSL_new(nullptr));
-
     baseLibrary = new Qv2rayBase::Qv2rayBaseLibrary;
     Qv2rayLogo = QPixmap{ u":/qv2ray.png"_qs };
     installEventFilter(this);

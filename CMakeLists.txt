@@ -92,7 +92,6 @@ if (QV2RAY_CHECK_DEPRECATED)
 endif()
 
 find_package(Threads REQUIRED)
-find_package(OpenSSL REQUIRED)
 
 find_package(Qt6 6.2 COMPONENTS Core Widgets Gui Network REQUIRED)
 
@@ -191,8 +190,6 @@ target_link_libraries(qv2ray PRIVATE
     Qv2ray::Qv2rayBase
     Qv2ray::QvPluginInterface
     Qv2ray::AllPlugins
-    OpenSSL::SSL
-    OpenSSL::Crypto
     SingleApplication::SingleApplication
     )
 
