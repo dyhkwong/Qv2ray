@@ -49,7 +49,7 @@ jobs:
           }
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: 'recursive'
 
@@ -63,7 +63,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.9.1
+        version: 6.10.1
         arch: ${{ matrix.config.arch }}
 
     - name: Build
@@ -88,7 +88,7 @@ jobs:
       run: cd build && 7z a ../Qv2ray.7z -- ./Qv2ray
 
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: Qv2ray-${{ github.sha }}-${{ matrix.config.artifact }}.7z
         path: Qv2ray.7z
