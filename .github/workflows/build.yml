@@ -54,7 +54,7 @@ jobs:
         submodules: 'recursive'
 
     - name: Install ninja-build tool
-      uses: seanmiddleditch/gha-setup-ninja@v4
+      uses: seanmiddleditch/gha-setup-ninja@v6
 
     - name: Install MSVC compiler
       if: matrix.config.has_msvc
@@ -63,7 +63,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.10.1
+        version: 6.10.2
         arch: ${{ matrix.config.arch }}
 
     - name: Build
